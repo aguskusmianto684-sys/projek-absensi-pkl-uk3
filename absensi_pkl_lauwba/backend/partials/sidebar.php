@@ -47,6 +47,18 @@
             <p>Absensi</p>
           </a>
         </li>
+        <li class="nav-item <?= ($page == 'supervisors') ? 'active' : '' ?>">
+          <a href="/pkl_lauwba/projek_absensi_pkl_uk3/absensi_pkl_lauwba/backend/pages/supervisors/index.php">
+            <i class="fas fa-user-check"></i>
+            <p>Pembimbing</p>
+          </a>
+        </li>
+        <li class="nav-item <?= ($page == 'supervisors') ? 'active' : '' ?>">
+          <a href="/pkl_lauwba/projek_absensi_pkl_uk3/absensi_pkl_lauwba/backend/pages/supervisors/index.php">
+            <i class="fas fa-user-check"></i>
+            <p>Pembimbing</p>
+          </a>
+        </li>
       </ul>
     </div>
   </div>

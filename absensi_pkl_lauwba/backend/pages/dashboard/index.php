@@ -1,8 +1,11 @@
 <?php
 session_start();
-if (!isset($_SESSION['logged_in']) || $_SESSION['role'] != 'admin') {
-    header("Location: ../../user/login.php");
-    exit();
+if (!isset($_SESSION['logged_in'])) {
+  echo "<script>
+        alert('Silakan login terlebih dahulu!');
+        window.location.href='../user/login.php';
+    </script>";
+  exit();
 }
 
 $page = "dashboard";
@@ -12,7 +15,6 @@ include '../../partials/sidebar.php';
 ?>
 <?php include '../../partials/navbar.php'; ?>
 <div class="container">
-  <h1>Selamat datang, <?= $_SESSION['username']; ?> (Admin)</h1>
   
   <div class="page-inner">
     <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
