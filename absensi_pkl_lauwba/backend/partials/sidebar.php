@@ -30,20 +30,20 @@
     <div class="sidebar-content">
       <ul class="nav nav-secondary">
         <li class="nav-item <?= ($page == 'dashboard') ? 'active' : '' ?>">
-          <a href="/pkl_lauwba/absensi_pkl&magang_lauwba/backend/pages/dashboard/index.php">
+          <a href="/pkl_lauwba/projek_absensi_pkl_uk3/absensi_pkl_lauwba/backend/pages/dashboard/index.php">
             <i class="fas fa-home"></i>
             <p>Dashboard</p>
           </a>
         </li>
         <li class="nav-item <?= ($page == 'participants') ? 'active' : '' ?>">
-          <a href="/pkl_lauwba/absensi_pkl&magang_lauwba/backend/pages/participants/index.php">
-            <i class="fas fa-home"></i>
+          <a href="/pkl_lauwba/projek_absensi_pkl_uk3/absensi_pkl_lauwba/backend/pages/participants/index.php">
+            <i class="fas fa-users"></i>
             <p>Peserta</p>
           </a>
         </li>
         <li class="nav-item <?= ($page == 'attendance') ? 'active' : '' ?>">
-          <a href="/pkl_lauwba/absensi_pkl&magang_lauwba/backend/pages/attendance/index.php">
-            <i class="fas fa-home"></i>
+          <a href="/pkl_lauwba/projek_absensi_pkl_uk3/absensi_pkl_lauwba/backend/pages/attendance/index.php">
+            <i class="fas fa-user-check"></i>
             <p>Absensi</p>
           </a>
         </li>
