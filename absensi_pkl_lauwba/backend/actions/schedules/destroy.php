@@ -6,38 +6,38 @@ $id = $_GET['id'] ?? null;
 
 if (!$id) {
     echo "<script>
-        alert('ID peserta tidak ditemukan!');
-        window.location.href='../../pages/participants/index.php';
+        alert('ID jadwal tidak ditemukan!');
+        window.location.href='../../pages/schedules/index.php';
     </script>";
     exit;
 }
 
-// Ambil data peserta untuk validasi
-$qSelect = mysqli_query($connect, "SELECT * FROM participants WHERE id = '$id'") or die(mysqli_error($connect));
+// Ambil data jadwal untuk validasi
+$qSelect = mysqli_query($connect, "SELECT * FROM schedules WHERE id = '$id'") or die(mysqli_error($connect));
 $data = mysqli_fetch_assoc($qSelect);
 
 if (!$data) {
     echo "<script>
-        alert('Data peserta tidak ditemukan!');
-        window.location.href='../../pages/participants/index.php';
+        alert('Data jadwal tidak ditemukan!');
+        window.location.href='../../pages/schedules/index.php';
     </script>";
     exit;
 }
 
-// Hapus data peserta dari database
-$qDelete = "DELETE FROM participants WHERE id = '$id'";
+// Hapus data jadwal dari database
+$qDelete = "DELETE FROM schedules WHERE id = '$id'";
 $res = mysqli_query($connect, $qDelete);
 
 if ($res) {
     echo "<script>
-        alert('Data peserta berhasil dihapus!');
-        window.location.href='../../pages/participants/index.php';
+        alert('Jadwal berhasil dihapus!');
+        window.location.href='../../pages/schedules/index.php';
     </script>";
     exit;
 } else {
     echo "<script>
-        alert('Data gagal dihapus: " . mysqli_error($connect) . "');
-        window.location.href='../../pages/participants/index.php';
+        alert('Gagal menghapus jadwal: " . mysqli_error($connect) . "');
+        window.location.href='../../pages/schedules/index.php';
     </script>";
     exit;
 }

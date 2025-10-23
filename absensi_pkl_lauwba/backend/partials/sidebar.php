@@ -53,10 +53,10 @@
             <p>Pembimbing</p>
           </a>
         </li>
-        <li class="nav-item <?= ($page == 'supervisors') ? 'active' : '' ?>">
-          <a href="/pkl_lauwba/projek_absensi_pkl_uk3/absensi_pkl_lauwba/backend/pages/supervisors/index.php">
+        <li class="nav-item <?= ($page == 'schedules') ? 'active' : '' ?>">
+          <a href="/pkl_lauwba/projek_absensi_pkl_uk3/absensi_pkl_lauwba/backend/pages/schedules/index.php">
             <i class="fas fa-user-check"></i>
-            <p>Pembimbing</p>
+            <p>Jadwal</p>
           </a>
         </li>
       </ul>

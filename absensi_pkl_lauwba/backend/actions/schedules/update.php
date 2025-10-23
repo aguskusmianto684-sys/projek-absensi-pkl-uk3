@@ -3,44 +3,41 @@ include '../../app.php';
 
 if (isset($_POST['tombol'])) {
     $id = (int) $_POST['id'];
-    $user_id = (int) $_POST['user_id'];
-    $school = escapeString($_POST['school']);
-    $program_study = escapeString($_POST['program_study']);
-    $start_date = escapeString($_POST['start_date']);
-    $end_date = escapeString($_POST['end_date']);
-    $supervisor_id = (int) $_POST['supervisor_id'];
-    $supervisor_name = escapeString($_POST['supervisor_name']);
+    $date = escapeString($_POST['date']);
+    $expected_in = escapeString($_POST['expected_in']);
+    $expected_out = escapeString($_POST['expected_out']);
+    $description = escapeString($_POST['description']);
 
-    if (empty($id) || empty($user_id) || empty($school) || empty($program_study) || empty($start_date) || empty($end_date)) {
+    // Validasi wajib
+    if (empty($id) || empty($date) || empty($expected_in) || empty($expected_out) || empty($description)) {
         echo "<script>
             alert('Harap isi semua field wajib!');
-            window.location.href='../../pages/participants/edit.php?id=$id';
+            window.location.href='../../pages/schedules/edit.php?id=$id';
         </script>";
         exit;
     }
 
-    $qUpdate = "UPDATE participants SET
-        user_id = '$user_id',
-        school = '$school',
-        program_study = '$program_study',
-        start_date = '$start_date',
-        end_date = '$end_date',
-        supervisor_id = '$supervisor_id',
-        supervisor_name = '$supervisor_name',
-        updated_at = NOW()
+    // Query update tanpa updated_at
+    $qUpdate = "UPDATE schedules SET
+        date = '$date',
+        expected_in = '$expected_in',
+        expected_out = '$expected_out',
+        description = '$description'
         WHERE id = '$id'";
 
     $res = mysqli_query($connect, $qUpdate);
 
     if ($res) {
         echo "<script>
-            alert('Data peserta berhasil diperbarui!');
-            window.location.href='../../pages/participants/index.php';
+            alert('Jadwal berhasil diperbarui!');
+            window.location.href='../../pages/schedules/index.php';
         </script>";
+        exit;
     } else {
         echo "<script>
-            alert('Gagal memperbarui data: " . mysqli_error($connect) . "');
-            window.location.href='../../pages/participants/edit.php?id=$id';
+            alert('Gagal memperbarui jadwal: " . mysqli_error($connect) . "');
+            window.location.href='../../pages/schedules/edit.php?id=$id';
         </script>";
+        exit;
     }
 }
