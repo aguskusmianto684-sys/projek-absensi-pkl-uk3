@@ -74,7 +74,7 @@
         <li class="nav-item <?= ($page == 'rekap') ? 'active' : '' ?>">
           <a href="/pkl_lauwba/projek_absensi_pkl_uk3/absensi_pkl_lauwba/backend/pages/rekap/index.php">
             <i class="fas fa-user-check"></i>
-            <p>Setting</p>
+            <p>Laporan</p>
           </a>
         </li>
       </ul>

@@ -1,3 +1,26 @@
+<?php
+include __DIR__ . '/../../config/connection.php';
+// Ambil data user dari DB berdasarkan session user_id
+$user_id = $_SESSION['user_id'] ?? null;
+$user_data = null;
+
+if ($user_id) {
+  $query = mysqli_query($connect, "SELECT username, full_name, role FROM users WHERE id = '$user_id' LIMIT 1");
+  $user_data = mysqli_fetch_assoc($query);
+}
+
+// Jika user belum login
+$username_display = $user_data['username'] ?? $_SESSION['username'] ?? 'Guest';
+?>
+
+
+<style>
+  .btn-danger:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(255, 107, 107, 0.5);
+    background: linear-gradient(135deg, #ff4d6d, #e63946) !important;
+  }
+</style>
 <div class="main-panel">
   <div class="main-header">
     <div class="main-header-logo">
@@ -28,20 +51,7 @@
     <nav
       class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
       <div class="container-fluid">
-        <nav
-          class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex">
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <button type="submit" class="btn btn-search pe-1">
-                <i class="fa fa-search search-icon"></i>
-              </button>
-            </div>
-            <input
-              type="text"
-              placeholder="Search ..."
-              class="form-control" />
-          </div>
-        </nav>
+
 
         <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
           <li
@@ -223,79 +233,6 @@
               </li>
             </ul>
           </li>
-          <li class="nav-item topbar-icon dropdown hidden-caret">
-            <a
-              class="nav-link"
-              data-bs-toggle="dropdown"
-              href="#"
-              aria-expanded="false">
-              <i class="fas fa-layer-group"></i>
-            </a>
-            <div class="dropdown-menu quick-actions animated fadeIn">
-              <div class="quick-actions-header">
-                <span class="title mb-1">Quick Actions</span>
-                <span class="subtitle op-7">Shortcuts</span>
-              </div>
-              <div class="quick-actions-scroll scrollbar-outer">
-                <div class="quick-actions-items">
-                  <div class="row m-0">
-                    <a class="col-6 col-md-4 p-0" href="#">
-                      <div class="quick-actions-item">
-                        <div class="avatar-item bg-danger rounded-circle">
-                          <i class="far fa-calendar-alt"></i>
-                        </div>
-                        <span class="text">Calendar</span>
-                      </div>
-                    </a>
-                    <a class="col-6 col-md-4 p-0" href="#">
-                      <div class="quick-actions-item">
-                        <div
-                          class="avatar-item bg-warning rounded-circle">
-                          <i class="fas fa-map"></i>
-                        </div>
-                        <span class="text">Maps</span>
-                      </div>
-                    </a>
-                    <a class="col-6 col-md-4 p-0" href="#">
-                      <div class="quick-actions-item">
-                        <div class="avatar-item bg-info rounded-circle">
-                          <i class="fas fa-file-excel"></i>
-                        </div>
-                        <span class="text">Reports</span>
-                      </div>
-                    </a>
-                    <a class="col-6 col-md-4 p-0" href="#">
-                      <div class="quick-actions-item">
-                        <div
-                          class="avatar-item bg-success rounded-circle">
-                          <i class="fas fa-envelope"></i>
-                        </div>
-                        <span class="text">Emails</span>
-                      </div>
-                    </a>
-                    <a class="col-6 col-md-4 p-0" href="#">
-                      <div class="quick-actions-item">
-                        <div
-                          class="avatar-item bg-primary rounded-circle">
-                          <i class="fas fa-file-invoice-dollar"></i>
-                        </div>
-                        <span class="text">Invoice</span>
-                      </div>
-                    </a>
-                    <a class="col-6 col-md-4 p-0" href="#">
-                      <div class="quick-actions-item">
-                        <div
-                          class="avatar-item bg-secondary rounded-circle">
-                          <i class="fas fa-credit-card"></i>
-                        </div>
-                        <span class="text">Payments</span>
-                      </div>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </li>
 
           <li class="nav-item topbar-user dropdown hidden-caret">
             <a
@@ -303,46 +240,26 @@
               data-bs-toggle="dropdown"
               href="#"
               aria-expanded="false">
-              <div class="avatar-sm">
-                <img
-                  src="../../template_admin/assets/img/profile.jpg"
-                  alt="..."
-                  class="avatar-img rounded-circle" />
+              <div class="avatar-sm d-flex justify-content-center align-items-center bg-light rounded-circle">
+                <i class="fas fa-user-circle fa-2x text-dark"></i>
               </div>
-              <span class="profile-username">
-                <span class="op-7">Hi,</span>
-                <span class="fw-bold">Hizrian</span>
-              </span>
+              <span class="me-2 text-capitalize" style="font-weight: bold; font-size: 16px;">
+  <?= htmlspecialchars($username_display, ENT_QUOTES, 'UTF-8') ?>
+</span>
             </a>
             <ul class="dropdown-menu dropdown-user animated fadeIn">
               <div class="dropdown-user-scroll scrollbar-outer">
                 <li>
                   <div class="user-box">
-                    <div class="avatar-lg">
-                      <img
-                        src="../../template_admin/assets/img/profile.jpg"
-                        alt="image profile"
-                        class="avatar-img rounded" />
+                    <div class="avatar-sm d-flex justify-content-center align-items-center bg-light rounded-circle">
+                      <i class="fas fa-user-circle fa-2x text-dark"></i>
                     </div>
                     <div class="u-text">
-                      <h4>Hizrian</h4>
-                      <p class="text-muted">hello@example.com</p>
-                      <a
-                        href="profile.html"
-                        class="btn btn-xs btn-secondary btn-sm">View Profile</a>
+                      <h4 class="text-capitalize"><?= $_SESSION['username'] ?? 'Guest' ?></h4>
+                      <a href="  /pkl_lauwba/projek_absensi_pkl_uk3/absensi_pkl_lauwba/backend/actions/auth/logout.php" class="btn btn-xs btn-danger btn-sm">Logout</a>
                     </div>
-                  </div>
-                </li>
-                <li>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="#">My Profile</a>
-                  <a class="dropdown-item" href="#">Inbox</a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item text-danger" href="/pkl_lauwba/projek_absensi_pkl_uk3/absensi_pkl_lauwba/backend/actions/auth/logout.php"
-                    onclick="return confirm('Yakin ingin logout?')">
-                    Logout
-                  </a>
 
+                  </div>
                 </li>
               </div>
             </ul>
