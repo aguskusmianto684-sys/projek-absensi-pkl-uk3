@@ -1,5 +1,6 @@
 <?php
 include '../../../config/connection.php';
+include '../../../config/logActivity.php'; // ✅ Catat aktivitas user
 session_start();
 
 $id = $_POST['id'] ?? null;
@@ -18,7 +19,7 @@ if (!in_array($status, ['aktif', 'nonaktif'])) {
     exit;
 }
 
-// Update status pengguna
+// 🔹 Jalankan update status
 $q = "
   UPDATE users 
   SET status='$status', updated_at=NOW() 
@@ -28,6 +29,12 @@ $q = "
 $res = mysqli_query($connect, $q);
 
 if ($res) {
+    // ✅ Catat log aktivitas hanya kalau user login
+    if ($user_id) {
+        $desc = "Mengubah status user ID: $id menjadi '$status'";
+        logActivity($connect, $user_id, 'Update Status', $desc);
+    }
+
     echo json_encode([
         "success" => true,
         "status" => $status,

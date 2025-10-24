@@ -1,5 +1,7 @@
 <?php
+session_start();
 include '../../../config/connection.php';
+include '../../../config/logActivity.php'; // ✅ untuk mencatat log aktivitas
 
 if (isset($_POST['tombol'])) {
   // Amankan input
@@ -49,6 +51,12 @@ if (isset($_POST['tombol'])) {
   $update = mysqli_query($connect, $query);
 
   if ($update) {
+    // ✅ Catat log aktivitas
+    if (isset($_SESSION['user_id'])) {
+      $deskripsi = "Memperbarui data pembimbing ID: $id (User ID: $user_id, Department: $department, Telepon: $phone)";
+      logActivity($connect, $_SESSION['user_id'], 'Edit', $deskripsi);
+    }
+
     echo "<script>
       alert('✅ Data pembimbing berhasil diperbarui!');
       window.location.href='../../pages/supervisors/index.php';

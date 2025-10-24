@@ -1,9 +1,10 @@
 <?php
 session_start();
 include '../../../config/connection.php';
+include '../../../config/logActivity.php'; // ✅ Tambahkan log aktivitas
 
 // ✅ 1. Cek login
-if (!isset($_SESSION['logged_in'])) {
+if (!isset($_SESSION['logged_in']) || !isset($_SESSION['user_id'])) {
   echo "<script>
     alert('Silakan login terlebih dahulu!');
     window.location.href='../../pages/user/login.php';
@@ -39,6 +40,12 @@ $qDelete = "DELETE FROM supervisors WHERE id = '$id'";
 $result = mysqli_query($connect, $qDelete);
 
 if ($result) {
+  // ✅ Catat aktivitas ke tabel logs
+  $namaPembimbing = htmlspecialchars($data['name'] ?? $data['id'], ENT_QUOTES, 'UTF-8');
+  $deskripsi = "Menghapus data pembimbing (ID: $id, Nama: $namaPembimbing) dari sistem.";
+
+  logActivity($connect, $_SESSION['user_id'], 'Hapus', $deskripsi);
+
   echo "<script>
     alert('✅ Data pembimbing berhasil dihapus!');
     window.location.href='../../pages/supervisors/index.php';

@@ -1,6 +1,7 @@
 <?php
 session_start();
 include '../../../config/connection.php';
+include '../../../config/logActivity.php'; // ✅ Tambahkan untuk mencatat log
 
 // ✅ 1. Pastikan user sudah login
 if (!isset($_SESSION['logged_in'])) {
@@ -47,8 +48,13 @@ $data = mysqli_fetch_assoc($qCheck);
 $qDelete = "DELETE FROM users WHERE id = '$id'";
 $result = mysqli_query($connect, $qDelete);
 
-// ✅ 6. Notifikasi hasil
+// ✅ 6. Jika sukses, catat log aktivitas
 if ($result) {
+  if (isset($_SESSION['user_id'])) {
+    $deskripsi = "Menghapus user dengan ID: $id, Username: {$data['username']}, Role: {$data['role']}";
+    logActivity($connect, $_SESSION['user_id'], 'Hapus', $deskripsi);
+  }
+
   echo "<script>
     alert('✅ Data user berhasil dihapus!');
     window.location.href='../../pages/users/index.php';

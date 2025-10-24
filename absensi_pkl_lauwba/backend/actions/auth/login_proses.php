@@ -1,6 +1,7 @@
 <?php
 session_start();
 include '../../app.php';
+include '../../../config/logActivity.php'; // ✅ Tambahkan fungsi log aktivitas
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Ambil data login
@@ -23,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit();
         }
 
-        // Verifikasi password (menggunakan hash)
+        // Verifikasi password
         if (password_verify($password, $user['password_hash'])) {
 
             // Simpan data user ke session
@@ -32,6 +33,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['username'] = $user['username'];
             $_SESSION['role'] = $user['role'];
             $_SESSION['full_name'] = $user['full_name'];
+
+            // ✅ Catat log aktivitas login
+            logActivity(
+                $connect,
+                $user['id'],
+                'Login',
+                'User ' . $user['username'] . ' berhasil login ke sistem.'
+            );
 
             // Redirect berdasarkan role
             if ($user['role'] === 'admin') {

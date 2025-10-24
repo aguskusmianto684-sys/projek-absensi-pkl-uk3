@@ -1,5 +1,7 @@
 <?php
 include '../../../config/connection.php';
+include '../../../config/logActivity.php'; // ✅ Tambahkan fungsi log aktivitas
+session_start();
 
 if (isset($_POST['tombol'])) {
   // Amankan input
@@ -11,7 +13,7 @@ if (isset($_POST['tombol'])) {
   $status     = mysqli_real_escape_string($connect, $_POST['status']);
   $password   = $_POST['password'];
 
-  // Validasi field wajib
+  // ✅ Validasi field wajib
   if (empty($id) || empty($username) || empty($full_name) || empty($email) || empty($role) || empty($status)) {
     echo "<script>
       alert('⚠️ Harap isi semua field wajib!');
@@ -20,11 +22,11 @@ if (isset($_POST['tombol'])) {
     exit;
   }
 
-  // 🔹 Cek apakah kolom updated_at ada di tabel users
+  // ✅ Cek apakah kolom updated_at ada di tabel users
   $checkCol = mysqli_query($connect, "SHOW COLUMNS FROM users LIKE 'updated_at'");
   $hasUpdatedAt = mysqli_num_rows($checkCol) > 0;
 
-  // 🔹 Jika password diisi, hash baru
+  // ✅ Tentukan query update (dengan atau tanpa password)
   if (!empty($password)) {
     $hashed = password_hash($password, PASSWORD_DEFAULT);
     $query = "
@@ -40,7 +42,6 @@ if (isset($_POST['tombol'])) {
       WHERE id = '$id'
     ";
   } else {
-    // Jika password tidak diubah
     $query = "
       UPDATE users 
       SET 
@@ -57,6 +58,12 @@ if (isset($_POST['tombol'])) {
   $update = mysqli_query($connect, $query);
 
   if ($update) {
+    // ✅ Catat log aktivitas setelah berhasil update
+    if (isset($_SESSION['user_id'])) {
+      $desc = "Memperbarui data user ID: $id, Username: $username, Nama: $full_name, Role: $role, Status: $status";
+      logActivity($connect, $_SESSION['user_id'], 'Edit', $desc);
+    }
+
     echo "<script>
       alert('✅ Data user berhasil diperbarui!');
       window.location.href='../../pages/users/index.php';
