@@ -70,10 +70,6 @@ table {
 <div class="container">
   <div class="page-inner">
     <div class="d-flex align-items-left flex-column flex-md-row pt-2 pb-3">
-      <div>
-        <h3 class="fw-bold mb-3">Rekapitulasi Absensi Peserta PKL / Magang</h3>
-        <h6 class="op-7 mb-2">Menampilkan total kehadiran setiap peserta berdasarkan data absensi harian</h6>
-      </div>
     </div>
 
     <div class="row">

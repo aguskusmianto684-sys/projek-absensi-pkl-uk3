@@ -325,6 +325,82 @@
 </script>
 
 
+<!-- ✅ Plugin DataTables -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+<script>
+$(document).ready(function() {
+
+    // ✅ Tabel Users
+    $('#usersTable').DataTable({
+        responsive: true,
+        pageLength: 10,
+        lengthMenu: [5, 10, 25, 50, 100],
+        ordering: true,
+        searching: true,
+        language: { url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/id.json" }
+    });
+
+    // ✅ Tabel Participants (Peserta)
+    $('#participantsTable').DataTable({
+        responsive: true,
+        pageLength: 10,
+        lengthMenu: [5, 10, 25, 50, 100],
+        ordering: true,
+        searching: true,
+        language: { url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/id.json" }
+    });
+
+    // ✅ Tabel Supervisors (Pembimbing)
+    $('#supervisorsTable').DataTable({
+        responsive: true,
+        pageLength: 10,
+        lengthMenu: [5, 10, 25, 50, 100],
+        ordering: true,
+        searching: true,
+        language: { url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/id.json" }
+    });
+
+    // ✅ Tabel Schedules (Jadwal Absensi)
+    $('#schedulesTable').DataTable({
+        responsive: true,
+        pageLength: 10,
+        lengthMenu: [5, 10, 25, 50, 100],
+        ordering: true,
+        searching: true,
+        language: { url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/id.json" }
+    });
+
+    // ✅ Tabel Settings (Konfigurasi Sistem)
+    $('#settingsTable').DataTable({
+        responsive: true,
+        pageLength: 10,
+        lengthMenu: [5, 10, 25, 50, 100],
+        ordering: true,
+        searching: true,
+        language: { url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/id.json" }
+    });
+
+    // ✅ Tabel Attendance (Absensi Harian)
+    $('#attendanceTable').DataTable({
+        responsive: true,
+        pageLength: 10,
+        lengthMenu: [5, 10, 25, 50, 100],
+        ordering: true,
+        searching: true,
+        language: { url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/id.json" }
+    });
+
+
+
+    // ⚠️ Tidak untuk tabel laporan (rekap), karena laporan biasanya sudah ada tombol ekspor sendiri
+});
+</script>
+
+
+
 
 </body>
 

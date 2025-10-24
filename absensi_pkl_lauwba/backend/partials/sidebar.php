@@ -49,32 +49,38 @@
         </li>
         <li class="nav-item <?= ($page == 'supervisors') ? 'active' : '' ?>">
           <a href="/pkl_lauwba/projek_absensi_pkl_uk3/absensi_pkl_lauwba/backend/pages/supervisors/index.php">
-            <i class="fas fa-user-check"></i>
+            <i class="fas fa-chalkboard-teacher"></i>
             <p>Pembimbing</p>
           </a>
         </li>
         <li class="nav-item <?= ($page == 'schedules') ? 'active' : '' ?>">
           <a href="/pkl_lauwba/projek_absensi_pkl_uk3/absensi_pkl_lauwba/backend/pages/schedules/index.php">
-            <i class="fas fa-user-check"></i>
+            <i class="fas fa-calendar-alt"></i>
             <p>Jadwal</p>
           </a>
         </li>
         <li class="nav-item <?= ($page == 'users') ? 'active' : '' ?>">
           <a href="/pkl_lauwba/projek_absensi_pkl_uk3/absensi_pkl_lauwba/backend/pages/users/index.php">
-            <i class="fas fa-user-check"></i>
+            <i class="fas fa-user"></i>
             <p>Penggunaa</p>
           </a>
         </li>
         <li class="nav-item <?= ($page == 'settings') ? 'active' : '' ?>">
           <a href="/pkl_lauwba/projek_absensi_pkl_uk3/absensi_pkl_lauwba/backend/pages/settings/index.php">
-            <i class="fas fa-user-check"></i>
+            <i class="fas fa-cog"></i>
             <p>Setting</p>
           </a>
         </li>
         <li class="nav-item <?= ($page == 'rekap') ? 'active' : '' ?>">
           <a href="/pkl_lauwba/projek_absensi_pkl_uk3/absensi_pkl_lauwba/backend/pages/rekap/index.php">
-            <i class="fas fa-user-check"></i>
+            <i class="fas fa-file-alt"></i>
             <p>Laporan</p>
+          </a>
+        </li>
+        <li class="nav-item <?= ($page == 'logs') ? 'active' : '' ?>">
+          <a href="/pkl_lauwba/projek_absensi_pkl_uk3/absensi_pkl_lauwba/backend/pages/logs/index.php">
+            <i class="fas fa-tasks"></i>
+            <p>Aktivitas</p>
           </a>
         </li>
       </ul>

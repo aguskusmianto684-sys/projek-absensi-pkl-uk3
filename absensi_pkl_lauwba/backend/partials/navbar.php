@@ -15,6 +15,15 @@ $username_display = $user_data['username'] ?? $_SESSION['username'] ?? 'Guest';
 
 
 <style>
+
+  /* Kalau mau efek lebih lembut */
+  .navbar.navbar-header {
+    background: #ffffffcc; /* sedikit transparan */
+    backdrop-filter: blur(6px); /* efek kaca lembut */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+
+
   .btn-danger:hover {
     transform: scale(1.05);
     box-shadow: 0 4px 12px rgba(255, 107, 107, 0.5);
