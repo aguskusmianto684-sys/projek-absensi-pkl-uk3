@@ -191,6 +191,8 @@
 <!-- Kaiadmin JS -->
 <script src="../../template_admin/assets/js/kaiadmin.min.js"></script>
 
+
+
 <!-- Kaiadmin DEMO methods, don't include it in your project! -->
 
 <script>
@@ -321,6 +323,9 @@
         });
     });
 </script>
+
+
+
 </body>
 
 </html>

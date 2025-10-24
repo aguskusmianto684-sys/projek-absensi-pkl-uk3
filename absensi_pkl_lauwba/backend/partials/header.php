@@ -42,6 +42,7 @@
 
   <!-- CSS Just for demo purpose, don't include it in your project -->
   <link rel="stylesheet" href="../../template_admin/assets/css/demo.css" />
+  
 </head>
 
 <body>

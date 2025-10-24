@@ -59,6 +59,24 @@
             <p>Jadwal</p>
           </a>
         </li>
+        <li class="nav-item <?= ($page == 'users') ? 'active' : '' ?>">
+          <a href="/pkl_lauwba/projek_absensi_pkl_uk3/absensi_pkl_lauwba/backend/pages/users/index.php">
+            <i class="fas fa-user-check"></i>
+            <p>Penggunaa</p>
+          </a>
+        </li>
+        <li class="nav-item <?= ($page == 'settings') ? 'active' : '' ?>">
+          <a href="/pkl_lauwba/projek_absensi_pkl_uk3/absensi_pkl_lauwba/backend/pages/settings/index.php">
+            <i class="fas fa-user-check"></i>
+            <p>Setting</p>
+          </a>
+        </li>
+        <li class="nav-item <?= ($page == 'rekap') ? 'active' : '' ?>">
+          <a href="/pkl_lauwba/projek_absensi_pkl_uk3/absensi_pkl_lauwba/backend/pages/rekap/index.php">
+            <i class="fas fa-user-check"></i>
+            <p>Setting</p>
+          </a>
+        </li>
       </ul>
     </div>
   </div>

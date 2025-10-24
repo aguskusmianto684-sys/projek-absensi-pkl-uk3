@@ -15,6 +15,10 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login - Sistem Absensi PKL Lauwba</title>
+  <link
+    rel="icon"
+    href="../../template_admin/assets/img/kaiadmin/logolauwba.png"
+    type="image/x-icon" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
   <style>

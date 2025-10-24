@@ -12,6 +12,10 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <link
+    rel="icon"
+    href="../../template_admin/assets/img/kaiadmin/logolauwba.png"
+    type="image/x-icon" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Register PKL / Magang</title>
