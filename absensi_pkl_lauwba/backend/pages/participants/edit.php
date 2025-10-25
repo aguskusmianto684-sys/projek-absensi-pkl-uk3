@@ -1,12 +1,12 @@
 <?php
-// session_start();
-// if (!isset($_SESSION['logged_in'])) {
-//   echo "<script>
-//         alert('Silakan login terlebih dahulu!');
-//         window.location.href='../user/login.php';
-//     </script>";
-//   exit();
-// }
+session_start();
+if (!isset($_SESSION['logged_in'])) {
+  echo "<script>
+        alert('Silakan login terlebih dahulu!');
+        window.location.href='../user/login.php';
+    </script>";
+  exit();
+}
 
 $page = "participants";
 include __DIR__ . '/../../../config/connection.php';
@@ -67,7 +67,7 @@ $qPembimbing = mysqli_query($connect, "SELECT id, full_name FROM users WHERE rol
 
           <div class="card-body">
             <form action="../../actions/participants/update.php" method="POST">
-              <input type="hidden" name="id" value="<?= $data['id'] ?>">
+              <input type="hidden" name="id" value="<?= htmlspecialchars($data['id'] ?? '') ?>">
 
               <!-- Pilih Peserta -->
               <div class="mb-3">
@@ -75,8 +75,8 @@ $qPembimbing = mysqli_query($connect, "SELECT id, full_name FROM users WHERE rol
                 <select name="user_id" id="user_id" class="form-control" required>
                   <option value="">-- Pilih Peserta --</option>
                   <?php while ($p = mysqli_fetch_assoc($qPeserta)) : ?>
-                    <option value="<?= $p['id'] ?>" <?= $p['id'] == $data['user_id'] ? 'selected' : '' ?>>
-                      <?= htmlspecialchars($p['full_name']) ?>
+                    <option value="<?= $p['id'] ?>" <?= $p['id'] == ($data['user_id'] ?? '') ? 'selected' : '' ?>>
+                      <?= htmlspecialchars($p['full_name'] ?? '') ?>
                     </option>
                   <?php endwhile; ?>
                 </select>
@@ -86,14 +86,14 @@ $qPembimbing = mysqli_query($connect, "SELECT id, full_name FROM users WHERE rol
               <div class="mb-3">
                 <label for="school" class="form-label">Asal Sekolah</label>
                 <input type="text" name="school" id="school" class="form-control"
-                  value="<?= htmlspecialchars($data['school']) ?>" required>
+                  value="<?= htmlspecialchars($data['school'] ?? '') ?>" required>
               </div>
 
               <!-- Program Studi -->
               <div class="mb-3">
                 <label for="program_study" class="form-label">Program Studi / Jurusan</label>
                 <input type="text" name="program_study" id="program_study" class="form-control"
-                  value="<?= htmlspecialchars($data['program_study']) ?>" required>
+                  value="<?= htmlspecialchars($data['program_study'] ?? '') ?>" required>
               </div>
 
               <!-- Tanggal Mulai & Selesai -->
@@ -101,12 +101,12 @@ $qPembimbing = mysqli_query($connect, "SELECT id, full_name FROM users WHERE rol
                 <div class="col-md-6">
                   <label for="start_date" class="form-label">Tanggal Mulai</label>
                   <input type="date" name="start_date" id="start_date" class="form-control"
-                    value="<?= $data['start_date'] ?>" required>
+                    value="<?= htmlspecialchars($data['start_date'] ?? '') ?>" required>
                 </div>
                 <div class="col-md-6">
                   <label for="end_date" class="form-label">Tanggal Selesai</label>
                   <input type="date" name="end_date" id="end_date" class="form-control"
-                    value="<?= $data['end_date'] ?>" required>
+                    value="<?= htmlspecialchars($data['end_date'] ?? '') ?>" required>
                 </div>
               </div>
 
@@ -116,8 +116,8 @@ $qPembimbing = mysqli_query($connect, "SELECT id, full_name FROM users WHERE rol
                 <select name="supervisor_id" id="supervisor_id" class="form-control" required>
                   <option value="">-- Pilih Pembimbing --</option>
                   <?php while ($s = mysqli_fetch_assoc($qPembimbing)) : ?>
-                    <option value="<?= $s['id'] ?>" <?= $s['id'] == $data['supervisor_id'] ? 'selected' : '' ?>>
-                      <?= htmlspecialchars($s['full_name']) ?>
+                    <option value="<?= $s['id'] ?>" <?= $s['id'] == ($data['supervisor_id'] ?? '') ? 'selected' : '' ?>>
+                      <?= htmlspecialchars($s['full_name'] ?? '') ?>
                     </option>
                   <?php endwhile; ?>
                 </select>
@@ -127,7 +127,7 @@ $qPembimbing = mysqli_query($connect, "SELECT id, full_name FROM users WHERE rol
               <div class="mb-3">
                 <label for="supervisor_name" class="form-label">Pembimbing Sekolah</label>
                 <input type="text" name="supervisor_name" id="supervisor_name" class="form-control"
-                  value="<?= htmlspecialchars($data['supervisor_name']) ?>">
+                  value="<?= htmlspecialchars($data['supervisor_name'] ?? '') ?>">
               </div>
 
               <!-- Tombol -->

@@ -14,7 +14,11 @@ include '../../partials/header.php';
 include '../../partials/sidebar.php';
 include '../../partials/navbar.php';
 
-// === Ambil data jadwal dari database ===
+$role = $_SESSION['role'];
+$user_id = $_SESSION['user_id'];
+
+// === Ambil data jadwal ===
+// Semua role bisa lihat, tapi CRUD hanya admin/pembimbing
 $qSchedules = "
   SELECT 
     id,
@@ -69,7 +73,11 @@ table {
           <div class="card-header d-flex align-items-center justify-content-between"
             style="background: linear-gradient(135deg, #023e8a, #0077b6, #90e0ef);">
             <h5 class="mb-0 text-white">Daftar Jadwal Absensi</h5>
-            <a href="create.php" class="btn btn-primary">Tambah Jadwal</a>
+
+            <!-- Tombol Tambah hanya untuk Admin & Pembimbing -->
+            <?php if (in_array($role, ['admin', 'pembimbing'])): ?>
+              <a href="create.php" class="btn btn-primary">Tambah Jadwal</a>
+            <?php endif; ?>
           </div>
 
           <div class="card-body">
@@ -83,7 +91,9 @@ table {
                     <th>Jam Keluar</th>
                     <th>Keterangan</th>
                     <th>Tanggal Dibuat</th>
-                    <th>Aksi</th>
+                    <?php if (in_array($role, ['admin', 'pembimbing'])): ?>
+                      <th>Aksi</th>
+                    <?php endif; ?>
                   </tr>
                 </thead>
                 <tbody>
@@ -99,19 +109,27 @@ table {
                         <td><?= htmlspecialchars($row['expected_out']) ?></td>
                         <td><?= htmlspecialchars($row['description'] ?? '-') ?></td>
                         <td><?= htmlspecialchars(date('d/m/Y', strtotime($row['created_at']))) ?></td>
-                        <td>
-                          <a href="./edit.php?id=<?= $row['id'] ?>" class="btn btn-warning btn-sm text-white">Edit</a>
-                          <a href="../../actions/schedules/destroy.php?id=<?= $row['id'] ?>"
-                             class="btn btn-danger btn-sm"
-                             onclick="return confirm('Yakin ingin menghapus jadwal ini?')">
-                            Hapus
-                          </a>
-                        </td>
+
+                        <!-- Kolom Aksi hanya untuk Admin & Pembimbing -->
+                        <?php if (in_array($role, ['admin', 'pembimbing'])): ?>
+                          <td>
+                            <a href="./edit.php?id=<?= $row['id'] ?>" class="btn btn-warning btn-sm text-white">Edit</a>
+
+                            <!-- Hapus hanya untuk admin -->
+                            <?php if ($role === 'admin'): ?>
+                              <a href="../../actions/schedules/destroy.php?id=<?= $row['id'] ?>"
+                                class="btn btn-danger btn-sm"
+                                onclick="return confirm('Yakin ingin menghapus jadwal ini?')">
+                                Hapus
+                              </a>
+                            <?php endif; ?>
+                          </td>
+                        <?php endif; ?>
                       </tr>
                   <?php endwhile;
                   else: ?>
                     <tr>
-                      <td colspan="7" class="text-center text-muted py-4">
+                      <td colspan="<?= in_array($role, ['admin', 'pembimbing']) ? 7 : 6 ?>" class="text-center text-muted py-4">
                         <i class="fas fa-info-circle me-1"></i> Belum ada jadwal absensi.
                       </td>
                     </tr>

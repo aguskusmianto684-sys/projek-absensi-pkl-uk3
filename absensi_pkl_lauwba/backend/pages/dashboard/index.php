@@ -7,7 +7,6 @@ if (!isset($_SESSION['logged_in'])) {
     </script>";
   exit();
 }
-
 $page = "dashboard";
 include '../../partials/header.php';
 include '../../partials/sidebar.php';

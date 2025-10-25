@@ -14,7 +14,10 @@ include '../../partials/header.php';
 include '../../partials/sidebar.php';
 include '../../partials/navbar.php';
 
-// === Ambil data rekap absensi dari view v_rekap_absensi ===
+$role = $_SESSION['role'];
+$user_id = $_SESSION['user_id']; // ambil id user login
+
+// === Ambil data rekap absensi berdasarkan role ===
 $qRekap = "
   SELECT 
     v.participant_id,
@@ -31,12 +34,24 @@ $qRekap = "
     p.supervisor_name
   FROM v_rekap_absensi v
   LEFT JOIN participants p ON v.participant_id = p.id
-  ORDER BY v.nama_peserta ASC
-  limit 5
 ";
+
+// === Filter data sesuai role ===
+if ($role === 'peserta') {
+  $qRekap .= " 
+    WHERE p.user_id = '$user_id'
+  ";
+} elseif ($role === 'pembimbing') {
+  $qRekap .= "
+    WHERE p.supervisor_id = '$user_id'
+  ";
+}
+
+$qRekap .= " ORDER BY v.nama_peserta ASC";
 
 $result = mysqli_query($connect, $qRekap) or die(mysqli_error($connect));
 ?>
+
 
 <style>
 .table,
@@ -69,15 +84,16 @@ table {
 <!-- === Konten Utama === -->
 <div class="container">
   <div class="page-inner">
-    <div class="d-flex align-items-left flex-column flex-md-row pt-2 pb-3">
-    </div>
+    <div class="d-flex align-items-left flex-column flex-md-row pt-2 pb-3"></div>
 
     <div class="row">
       <div class="col-md-12">
         <div class="card card-round shadow-sm">
           <div class="card-header"
             style="background: linear-gradient(135deg, #023e8a, #0077b6, #90e0ef); color: #fff;">
-            <h5 class="mb-0">Tabel Rekap Absensi</h5>
+            <h5 class="mb-0">
+              <?= ($role === 'peserta') ? 'Riwayat Kehadiran Saya' : 'Rekap Absensi Peserta' ?>
+            </h5>
           </div>
 
           <div class="card-body">
@@ -137,14 +153,12 @@ table {
 <?php include '../../partials/footer.php'; ?>
 <?php include '../../partials/script.php'; ?>
 
-<!-- DataTables Export Extension -->
+<!-- DataTables + Export -->
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap5.min.css">
 
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
-
-<!-- Tombol Export -->
 <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.bootstrap5.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -155,21 +169,26 @@ table {
 
 <script>
   $(document).ready(function() {
-    $('#rekapTable').DataTable({
+    const tableConfig = {
       pageLength: 10,
       responsive: true,
-      dom: 'Bfrtip', // aktifkan tombol
-      buttons: [
+      language: {
+        search: "🔍 Cari:",
+        zeroRecords: "❌ Tidak ditemukan",
+        info: "Menampilkan _START_ - _END_ dari _TOTAL_ data",
+        infoEmpty: "Tidak ada data tersedia",
+        lengthMenu: "Tampilkan _MENU_ data"
+      }
+    };
+
+    <?php if ($role !== 'peserta'): ?>
+      // Admin & Pembimbing → punya fitur export
+      tableConfig.dom = 'Bfrtip';
+      tableConfig.buttons = [
         {
           extend: 'excelHtml5',
           text: '<i class="fas fa-file-excel"></i> Excel',
           className: 'btn btn-success btn-sm mx-1',
-          title: 'Rekap Absensi Peserta'
-        },
-        {
-          extend: 'csvHtml5',
-          text: '<i class="fas fa-file-csv"></i> CSV',
-          className: 'btn btn-info btn-sm mx-1',
           title: 'Rekap Absensi Peserta'
         },
         {
@@ -179,9 +198,6 @@ table {
           title: 'Rekap Absensi Peserta',
           orientation: 'landscape',
           pageSize: 'A4',
-          exportOptions: {
-            columns: ':visible'
-          }
         },
         {
           extend: 'print',
@@ -189,15 +205,10 @@ table {
           className: 'btn btn-secondary btn-sm mx-1',
           title: 'Rekap Absensi Peserta'
         }
-      ],
-      language: {
-        search: "🔍 Cari:",
-        zeroRecords: "❌ Tidak ditemukan",
-        info: "Menampilkan _START_ - _END_ dari _TOTAL_ data",
-        infoEmpty: "Tidak ada data tersedia",
-        lengthMenu: "Tampilkan _MENU_ data"
-      }
-    });
+      ];
+    <?php endif; ?>
+
+    $('#rekapTable').DataTable(tableConfig);
   });
 </script>
 

@@ -1,6 +1,7 @@
 <?php
-include '../../app.php'; // pastikan file app.php berisi koneksi $connect & fungsi escapeString()
-include '../../../config/logActivity.php'; // ✅ Tambah fungsi log aktivitas
+include '../../app.php'; // koneksi $connect & fungsi escapeString()
+include '../../../config/logActivity.php';
+include '../../../config/notification.php'; // ✅ tambahkan file notifikasi
 session_start();
 
 if (isset($_POST['tombol'])) {
@@ -19,7 +20,7 @@ if (isset($_POST['tombol'])) {
         exit;
     }
 
-    // Query insert
+    // Query insert jadwal
     $qInsert = "INSERT INTO schedules 
         (date, expected_in, expected_out, description, created_at) 
         VALUES ('$date', '$expected_in', '$expected_out', '$description', NOW())";
@@ -27,17 +28,42 @@ if (isset($_POST['tombol'])) {
     $res = mysqli_query($connect, $qInsert);
 
     if ($res) {
-        // ✅ Ambil ID jadwal terakhir yang baru ditambahkan
         $last_id = mysqli_insert_id($connect);
 
-        // ✅ Catat aktivitas ke tabel logs
+        // ✅ Log aktivitas admin
         if (isset($_SESSION['user_id'])) {
             $desc = "Menambahkan jadwal baru (ID: $last_id) — Tanggal: $date, Masuk: $expected_in, Pulang: $expected_out, Keterangan: $description";
             logActivity($connect, $_SESSION['user_id'], 'Tambah', $desc);
         }
 
+        // ✅ Kirim notifikasi ke semua peserta aktif
+        $qUsers = "SELECT * FROM users WHERE role='peserta' AND status='aktif'";
+        $resUsers = mysqli_query($connect, $qUsers);
+
+        while ($user = mysqli_fetch_assoc($resUsers)) {
+            $message = "Halo {$user['full_name']}!\nJadwal baru telah ditambahkan:\n📅 Tanggal: $date\n🕒 Masuk: $expected_in\n🏠 Pulang: $expected_out\n📝 $description";
+
+            // 1️⃣ Simpan ke tabel notifications
+            mysqli_query($connect, "INSERT INTO notifications (user_id, message, type)
+                                    VALUES ('{$user['id']}', '".addslashes($message)."', 'info')");
+
+            // 2️⃣ Kirim Email (jika user punya email)
+            if (!empty($user['email'])) {
+                sendEmail(
+                    $user['email'],
+                    "Jadwal Baru Telah Diumumkan",
+                    nl2br($message)
+                );
+            }
+
+            // 3️⃣ Kirim WhatsApp (jika user punya nomor WA)
+            if (!empty($user['phone'])) { // pastikan kolom phone ada
+                sendWhatsApp($user['phone'], $message);
+            }
+        }
+
         echo "<script>
-            alert('✅ Jadwal berhasil ditambahkan!');
+            alert('✅ Jadwal berhasil ditambahkan dan notifikasi dikirim!');
             window.location.href='../../pages/schedules/index.php';
         </script>";
         exit;
