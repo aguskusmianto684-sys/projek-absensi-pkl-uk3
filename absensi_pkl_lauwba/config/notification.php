@@ -25,7 +25,8 @@ use PHPMailer\PHPMailer\Exception;
 // ============================================================
 // 🧩 FUNGSI LOGGING INTERNAL
 // ============================================================
-function dbg_log($msg) {
+function dbg_log($msg)
+{
     error_log("[NOTIFY] " . $msg);
 }
 
