@@ -1,56 +1,81 @@
 <?php
-session_name("ecommerceUserSession");
+session_name("absenPklSession");
 session_start();
-include "../../config/connection.php";
+include "../../config/connection.php"; // pastikan path sesuai
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = mysqli_real_escape_string($connect, $_POST['username']);
     $password = $_POST['password'];
 
-    $q = "SELECT * FROM users WHERE username = '$username' LIMIT 1";
-    $result = mysqli_query($connect, $q);
-    $user = mysqli_fetch_assoc($result);
+    // Cek user berdasarkan username
+    $query = mysqli_query($connect, "SELECT * FROM users WHERE username='$username' LIMIT 1");
 
-    if ($user && password_verify($password, $user['password'])) {
-        $_SESSION['id_user'] = $user['id_user'];
-        $_SESSION['nama_lengkap'] = $user['nama_lengkap'];
-        $_SESSION['hak_akses'] = $user['hak_akses'];
+    if (mysqli_num_rows($query) === 1) {
+        $user = mysqli_fetch_assoc($query);
 
-        header("Location: ../index.php");
-        exit;
+        // Cek status aktif
+        if ($user['status'] !== 'aktif') {
+            $_SESSION['error'] = "Akun Anda nonaktif. Hubungi admin.";
+        } elseif (password_verify($password, $user['password_hash'])) {
+            // Login berhasil
+            $_SESSION['id_user']   = $user['id'];
+            $_SESSION['username']  = $user['username'];
+            $_SESSION['full_name'] = $user['full_name'];
+            $_SESSION['role']      = $user['role'];
+            $_SESSION['status']    = $user['status'];
+
+            header("Location: ../index.php");
+            exit;
+        } else {
+            $_SESSION['error'] = "Password salah!";
+        }
     } else {
-        $error = "Username atau password salah!";
+        $_SESSION['error'] = "Username tidak ditemukan!";
     }
 }
 ?>
-<!doctype html>
-<html lang="en">
+
+<!DOCTYPE html>
+<html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Login</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+  <title>Login - PKL Lauwba</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-100 flex items-center justify-center h-screen">
+<body class="bg-light">
 
-<div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-  <h2 class="text-2xl font-bold mb-6">Login</h2>
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-5">
+      <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-body p-4">
+          <h3 class="text-center mb-3 text-primary">Login Peserta PKL</h3>
 
-  <?php if (isset($error)): ?>
-    <p class="text-red-600 mb-4"><?= $error ?></p>
-  <?php endif; ?>
+          <?php if (isset($_SESSION['error'])): ?>
+            <div class="alert alert-danger"><?= $_SESSION['error']; unset($_SESSION['error']); ?></div>
+          <?php endif; ?>
 
-  <?php if (isset($_SESSION['success'])): ?>
-    <p class="text-green-600 mb-4"><?= $_SESSION['success']; unset($_SESSION['success']); ?></p>
-  <?php endif; ?>
+          <form method="POST" action="">
+            <div class="mb-3">
+              <label>Username</label>
+              <input type="text" name="username" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label>Password</label>
+              <input type="password" name="password" class="form-control" required>
+            </div>
 
-  <form method="POST">
-    <input type="text" name="username" placeholder="Username" required class="w-full p-3 border rounded mb-3">
-    <input type="password" name="password" placeholder="Password" required class="w-full p-3 border rounded mb-3">
-    
-    <button type="submit" class="w-full bg-green-600 text-white py-3 rounded hover:bg-green-700">Login</button>
-  </form>
+            <button class="btn btn-primary w-100" type="submit">Login</button>
+          </form>
 
-  <p class="mt-4 text-sm text-gray-600">Belum punya akun? <a href="register.php" class="text-green-600">Register</a></p>
+          <p class="text-center mt-3">
+            Belum punya akun?
+            <a href="register.php">Daftar di sini</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 </body>

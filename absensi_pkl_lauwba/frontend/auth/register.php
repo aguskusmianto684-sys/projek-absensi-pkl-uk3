@@ -1,56 +1,89 @@
 <?php
-session_name("ecommerceUserSession");
+session_name("absenPklSession");
 session_start();
-include "../../config/connection.php";
+include "../../config/connection.php"; // pastikan path benar
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = mysqli_real_escape_string($connect, $_POST['username']);
-    $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
-    $nama     = mysqli_real_escape_string($connect, $_POST['nama_lengkap']);
-    $email    = mysqli_real_escape_string($connect, $_POST['email']);
-    $alamat   = mysqli_real_escape_string($connect, $_POST['alamat']);
-    $telepon  = mysqli_real_escape_string($connect, $_POST['no_telepon']);
+    $username   = mysqli_real_escape_string($connect, $_POST['username']);
+    $full_name  = mysqli_real_escape_string($connect, $_POST['full_name']);
+    $email      = mysqli_real_escape_string($connect, $_POST['email']);
+    $password   = password_hash($_POST['password'], PASSWORD_DEFAULT);
+    $role       = 'peserta';
+    $status     = 'aktif';
 
-    $q = "INSERT INTO users (username, password, nama_lengkap, email, alamat, no_telepon, hak_akses, tanggal_registrasi)
-          VALUES ('$username', '$password', '$nama', '$email', '$alamat', '$telepon', 'pembeli', NOW())";
-    
-    if (mysqli_query($connect, $q)) {
-        $_SESSION['success'] = "Registrasi berhasil, silakan login!";
-        header("Location: login.php");
-        exit;
+    // Cek username atau email sudah ada
+    $cek = mysqli_query($connect, "SELECT * FROM users WHERE username='$username' OR email='$email'");
+    if (mysqli_num_rows($cek) > 0) {
+        $_SESSION['error'] = "Username atau email sudah digunakan!";
     } else {
-        $error = "Registrasi gagal: " . mysqli_error($connect);
+        $query = "
+            INSERT INTO users (username, password_hash, full_name, email, role, status, created_at, updated_at)
+            VALUES ('$username', '$password', '$full_name', '$email', '$role', '$status', NOW(), NOW())
+        ";
+        $insert = mysqli_query($connect, $query);
+
+        if ($insert) {
+            $_SESSION['success'] = "Registrasi berhasil! Silakan login.";
+            header("Location: login.php");
+            exit;
+        } else {
+            $_SESSION['error'] = "Gagal menyimpan data: " . mysqli_error($connect);
+        }
     }
 }
 ?>
-<!doctype html>
-<html lang="en">
+
+<!DOCTYPE html>
+<html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Register</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+  <title>Register - PKL Lauwba</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-100 flex items-center justify-center h-screen">
+<body class="bg-light">
 
-<div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-  <h2 class="text-2xl font-bold mb-6">Register</h2>
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-5">
+      <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-body p-4">
+          <h3 class="text-center mb-3 text-primary">Daftar Akun Peserta PKL</h3>
 
-  <?php if (isset($error)): ?>
-    <p class="text-red-600 mb-4"><?= $error ?></p>
-  <?php endif; ?>
+          <?php if (isset($_SESSION['error'])): ?>
+            <div class="alert alert-danger"><?= $_SESSION['error']; unset($_SESSION['error']); ?></div>
+          <?php elseif (isset($_SESSION['success'])): ?>
+            <div class="alert alert-success"><?= $_SESSION['success']; unset($_SESSION['success']); ?></div>
+          <?php endif; ?>
 
-  <form method="POST">
-    <input type="text" name="username" placeholder="Username" required class="w-full p-3 border rounded mb-3">
-    <input type="password" name="password" placeholder="Password" required class="w-full p-3 border rounded mb-3">
-    <input type="text" name="nama_lengkap" placeholder="Nama Lengkap" required class="w-full p-3 border rounded mb-3">
-    <input type="email" name="email" placeholder="Email" required class="w-full p-3 border rounded mb-3">
-    <input type="text" name="alamat" placeholder="Alamat" required class="w-full p-3 border rounded mb-3">
-    <input type="text" name="no_telepon" placeholder="Nomor Telepon" required class="w-full p-3 border rounded mb-3">
-    
-    <button type="submit" class="w-full bg-green-600 text-white py-3 rounded hover:bg-green-700">Daftar</button>
-  </form>
+          <form method="POST" action="">
+            <div class="mb-3">
+              <label>Username</label>
+              <input type="text" name="username" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label>Nama Lengkap</label>
+              <input type="text" name="full_name" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label>Email</label>
+              <input type="email" name="email" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label>Password</label>
+              <input type="password" name="password" class="form-control" required>
+            </div>
 
-  <p class="mt-4 text-sm text-gray-600">Sudah punya akun? <a href="login.php" class="text-green-600">Login</a></p>
+            <button class="btn btn-primary w-100" type="submit">Daftar</button>
+          </form>
+
+          <p class="text-center mt-3">
+            Sudah punya akun?
+            <a href="login.php">Login di sini</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 </body>
