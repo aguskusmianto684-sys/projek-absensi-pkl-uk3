@@ -35,10 +35,11 @@ function dbg_log($msg)
 // ============================================================
 // ⚠️ Ganti data di bawah ini sesuai akun Gmail kamu
 define('MAIL_HOST', 'smtp.gmail.com');
-define('MAIL_USERNAME', 'aguskusmianto684@gmail.com');   // alamat Gmail kamu
-define('MAIL_PASSWORD', 'zfvk bsdw qszh yhjn');          // ini App Password Gmail kamu
-define('MAIL_FROM', 'aguskusmianto684@gmail.com');       // sama dengan MAIL_USERNAME
+define('MAIL_USERNAME', 'aguskusmianto684@gmail.com');
+define('MAIL_PASSWORD', 'zfvk bsdw qszh yhjn');  // App Password Gmail 16 karakter
+define('MAIL_FROM', 'aguskusmianto684@gmail.com');
 define('MAIL_FROM_NAME', 'Sistem Absensi');
+
 
 
 
@@ -47,7 +48,7 @@ define('MAIL_FROM_NAME', 'Sistem Absensi');
 // 💬 KONFIGURASI FONNTE (WHATSAPP)
 // ============================================================
 // ⚠️ Ganti dengan token dari dashboard Fonnte kamu
-define('FONNTE_TOKEN', 'YOUR_FONNTE_TOKEN');
+define('FONNTE_TOKEN', 'DazL7rurvvV7iQ2LKJV9');
 
 // ============================================================
 // 📨 FUNGSI KIRIM EMAIL (PHPMailer)

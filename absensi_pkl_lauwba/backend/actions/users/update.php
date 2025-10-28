@@ -1,6 +1,6 @@
 <?php
 include '../../../config/connection.php';
-include '../../../config/logActivity.php'; // ✅ Tambahkan fungsi log aktivitas
+include '../../../config/logActivity.php';
 session_start();
 
 if (isset($_POST['tombol'])) {
@@ -9,12 +9,13 @@ if (isset($_POST['tombol'])) {
   $username   = mysqli_real_escape_string($connect, $_POST['username']);
   $full_name  = mysqli_real_escape_string($connect, $_POST['full_name']);
   $email      = mysqli_real_escape_string($connect, $_POST['email']);
+  $phone      = mysqli_real_escape_string($connect, $_POST['phone']); // ✅ tambah phone
   $role       = mysqli_real_escape_string($connect, $_POST['role']);
   $status     = mysqli_real_escape_string($connect, $_POST['status']);
   $password   = $_POST['password'];
 
-  // ✅ Validasi field wajib
-  if (empty($id) || empty($username) || empty($full_name) || empty($email) || empty($role) || empty($status)) {
+  // Validasi field wajib
+  if (empty($id) || empty($username) || empty($full_name) || empty($email) || empty($role) || empty($status) || empty($phone)) {
     echo "<script>
       alert('⚠️ Harap isi semua field wajib!');
       window.history.back();
@@ -22,11 +23,11 @@ if (isset($_POST['tombol'])) {
     exit;
   }
 
-  // ✅ Cek apakah kolom updated_at ada di tabel users
+  // Cek apakah kolom updated_at ada di tabel users
   $checkCol = mysqli_query($connect, "SHOW COLUMNS FROM users LIKE 'updated_at'");
   $hasUpdatedAt = mysqli_num_rows($checkCol) > 0;
 
-  // ✅ Tentukan query update (dengan atau tanpa password)
+  // Tentukan query update (dengan atau tanpa password)
   if (!empty($password)) {
     $hashed = password_hash($password, PASSWORD_DEFAULT);
     $query = "
@@ -35,9 +36,10 @@ if (isset($_POST['tombol'])) {
         username = '$username',
         full_name = '$full_name',
         email = '$email',
+        phone = '$phone',  -- ✅ tambahkan phone di update
         role = '$role',
         status = '$status',
-        password_hash = '$hashed' " .
+        password_hash = '$hashed' " . 
         ($hasUpdatedAt ? ", updated_at = NOW()" : "") . "
       WHERE id = '$id'
     ";
@@ -48,8 +50,9 @@ if (isset($_POST['tombol'])) {
         username = '$username',
         full_name = '$full_name',
         email = '$email',
+        phone = '$phone',  -- ✅ tambahkan phone di update
         role = '$role',
-        status = '$status' " .
+        status = '$status' " . 
         ($hasUpdatedAt ? ", updated_at = NOW()" : "") . "
       WHERE id = '$id'
     ";
@@ -58,9 +61,9 @@ if (isset($_POST['tombol'])) {
   $update = mysqli_query($connect, $query);
 
   if ($update) {
-    // ✅ Catat log aktivitas setelah berhasil update
+    // Catat log aktivitas
     if (isset($_SESSION['user_id'])) {
-      $desc = "Memperbarui data user ID: $id, Username: $username, Nama: $full_name, Role: $role, Status: $status";
+      $desc = "Memperbarui data user ID: $id, Username: $username, Nama: $full_name, Phone: $phone, Role: $role, Status: $status";
       logActivity($connect, $_SESSION['user_id'], 'Edit', $desc);
     }
 

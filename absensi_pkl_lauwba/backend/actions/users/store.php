@@ -7,6 +7,8 @@ if (isset($_POST['tombol'])) {
   $username = mysqli_real_escape_string($connect, $_POST['username']);
   $full_name = mysqli_real_escape_string($connect, $_POST['full_name']);
   $email = mysqli_real_escape_string($connect, $_POST['email']);
+  $phone = mysqli_real_escape_string($connect, $_POST['phone']);
+
   $password = $_POST['password'];
   $role = mysqli_real_escape_string($connect, $_POST['role']);
   $status = mysqli_real_escape_string($connect, $_POST['status']);
@@ -33,30 +35,29 @@ if (isset($_POST['tombol'])) {
   // ✅ Hash password untuk keamanan
   $password_hash = password_hash($password, PASSWORD_DEFAULT);
 
-  // ✅ Simpan data user baru
-  $query = "
-    INSERT INTO users (username, password_hash, full_name, email, role, status, created_at, updated_at)
-    VALUES ('$username', '$password_hash', '$full_name', '$email', '$role', '$status', NOW(), NOW())
-  ";
+// ✅ Simpan data user baru
+$sql = "INSERT INTO users (username, password_hash, full_name, email, phone, role, status, created_at, updated_at)
+        VALUES ('$username', '$password_hash', '$full_name', '$email', '$phone', '$role', '$status', NOW(), NOW())";
 
-  $result = mysqli_query($connect, $query);
+$result = mysqli_query($connect, $sql);
 
-  if ($result) {
-    // ✅ Catat log aktivitas
+if ($result) {
+    // Catat log aktivitas
     if (isset($_SESSION['user_id'])) {
-      $desc = "Menambahkan user baru: Username = $username, Nama Lengkap = $full_name, Role = $role, Status = $status";
-      logActivity($connect, $_SESSION['user_id'], 'Tambah', $desc);
+        $desc = "Menambahkan user baru: Username = $username, Nama Lengkap = $full_name, Role = $role, Status = $status";
+        logActivity($connect, $_SESSION['user_id'], 'Tambah', $desc);
     }
 
     echo "<script>
       alert('✅ Data user berhasil ditambahkan!');
       window.location.href='../../pages/users/index.php';
     </script>";
-  } else {
+} else {
     echo "<script>
       alert('❌ Gagal menyimpan data: " . addslashes(mysqli_error($connect)) . "');
       window.location.href='../../pages/users/create.php';
     </script>";
-  }
+}
+
 }
 ?>

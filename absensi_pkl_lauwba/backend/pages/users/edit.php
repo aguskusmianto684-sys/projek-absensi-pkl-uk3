@@ -60,22 +60,29 @@ if (!$data) {
               <!-- Username -->
               <div class="mb-3">
                 <label for="username" class="form-label">Username</label>
-                <input type="text" name="username" id="username" class="form-control" 
-                       value="<?= htmlspecialchars($data['username']) ?>" required>
+                <input type="text" name="username" id="username" class="form-control"
+                  value="<?= htmlspecialchars($data['username']) ?>" required>
               </div>
 
               <!-- Full Name -->
               <div class="mb-3">
                 <label for="full_name" class="form-label">Nama Lengkap</label>
-                <input type="text" name="full_name" id="full_name" class="form-control" 
-                       value="<?= htmlspecialchars($data['full_name']) ?>" required>
+                <input type="text" name="full_name" id="full_name" class="form-control"
+                  value="<?= htmlspecialchars($data['full_name']) ?>" required>
               </div>
 
               <!-- Email -->
               <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
-                <input type="email" name="email" id="email" class="form-control" 
-                       value="<?= htmlspecialchars($data['email']) ?>" required>
+                <input type="email" name="email" id="email" class="form-control"
+                  value="<?= htmlspecialchars($data['email']) ?>" required>
+              </div>
+
+              <!-- Phone -->
+              <div class="mb-3">
+                <label for="phone" class="form-label">No. HP</label>
+                <input type="text" name="phone" id="phone" class="form-control"
+                  value="<?= htmlspecialchars($data['phone'] ?? '') ?>" required>
               </div>
 
               <!-- Role -->
@@ -103,17 +110,17 @@ if (!$data) {
                 <label for="password" class="form-label">Password Baru (Opsional)</label>
                 <div class="input-group">
                   <input type="password" name="password" id="password" class="form-control" placeholder="Biarkan kosong jika tidak diubah">
-              </div>
+                </div>
 
-              <!-- Tombol -->
-              <div class="d-flex justify-content-end mt-4">
-                <button type="submit" name="tombol" class="btn btn-success me-2">
-                  <i class="fas fa-save me-1"></i> Perbarui
-                </button>
-                <a href="./index.php" class="btn btn-secondary">
-                  <i class="fas fa-arrow-left me-1"></i> Kembali
-                </a>
-              </div>
+                <!-- Tombol -->
+                <div class="d-flex justify-content-end mt-4">
+                  <button type="submit" name="tombol" class="btn btn-success me-2">
+                    <i class="fas fa-save me-1"></i> Perbarui
+                  </button>
+                  <a href="./index.php" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left me-1"></i> Kembali
+                  </a>
+                </div>
 
             </form>
           </div>
@@ -128,4 +135,5 @@ if (!$data) {
 <?php include '../../partials/script.php'; ?>
 
 </body>
+
 </html>

@@ -9,6 +9,8 @@ if (!isset($_SESSION['logged_in'])) {
 }
 
 $page = "users";
+include '../../../config/notify_logic.php';
+
 include __DIR__ . '/../../../config/connection.php';
 include '../../partials/header.php';
 include '../../partials/sidebar.php';
@@ -16,10 +18,10 @@ include '../../partials/navbar.php';
 ?>
 
 <style>
-.card {
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-}
+  .card {
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
 </style>
 
 <div class="container">
@@ -58,6 +60,13 @@ include '../../partials/navbar.php';
                 <label for="email" class="form-label">Email</label>
                 <input type="email" name="email" id="email" class="form-control" placeholder="Masukkan email" required>
               </div>
+
+              <!-- Nomor Telepon -->
+              <div class="mb-3">
+                <label for="phone" class="form-label">Nomor Telepon</label>
+                <input type="text" name="phone" id="phone" class="form-control" placeholder="Masukkan nomor telepon">
+              </div>
+
 
               <!-- Password -->
               <div class="mb-3">
