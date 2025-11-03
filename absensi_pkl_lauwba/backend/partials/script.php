@@ -383,15 +383,6 @@ $(document).ready(function() {
         language: { url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/id.json" }
     });
 
-    // ✅ Tabel Attendance (Absensi Harian)
-    $('#attendanceTable').DataTable({
-        responsive: true,
-        pageLength: 10,
-        lengthMenu: [5, 10, 25, 50, 100],
-        ordering: true,
-        searching: true,
-        language: { url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/id.json" }
-    });
 
 
 

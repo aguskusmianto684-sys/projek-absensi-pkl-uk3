@@ -153,62 +153,6 @@ table {
 <?php include '../../partials/footer.php'; ?>
 <?php include '../../partials/script.php'; ?>
 
-<!-- DataTables + Export -->
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap5.min.css">
 
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.bootstrap5.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
 
-<script>
-  $(document).ready(function() {
-    const tableConfig = {
-      pageLength: 10,
-      responsive: true,
-      language: {
-        search: "🔍 Cari:",
-        zeroRecords: "❌ Tidak ditemukan",
-        info: "Menampilkan _START_ - _END_ dari _TOTAL_ data",
-        infoEmpty: "Tidak ada data tersedia",
-        lengthMenu: "Tampilkan _MENU_ data"
-      }
-    };
-
-    <?php if ($role !== 'peserta'): ?>
-      // Admin & Pembimbing → punya fitur export
-      tableConfig.dom = 'Bfrtip';
-      tableConfig.buttons = [
-        {
-          extend: 'excelHtml5',
-          text: '<i class="fas fa-file-excel"></i> Excel',
-          className: 'btn btn-success btn-sm mx-1',
-          title: 'Rekap Absensi Peserta'
-        },
-        {
-          extend: 'pdfHtml5',
-          text: '<i class="fas fa-file-pdf"></i> PDF',
-          className: 'btn btn-danger btn-sm mx-1',
-          title: 'Rekap Absensi Peserta',
-          orientation: 'landscape',
-          pageSize: 'A4',
-        },
-        {
-          extend: 'print',
-          text: '<i class="fas fa-print"></i> Print',
-          className: 'btn btn-secondary btn-sm mx-1',
-          title: 'Rekap Absensi Peserta'
-        }
-      ];
-    <?php endif; ?>
-
-    $('#rekapTable').DataTable(tableConfig);
-  });
-</script>
 
