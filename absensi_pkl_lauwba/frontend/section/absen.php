@@ -47,32 +47,29 @@ $user_data = mysqli_fetch_assoc($user_query);
 
 // Cek apakah sudah check-in tapi belum check-out hari ini
 $check = mysqli_query($connect, "
-    SELECT * FROM attendance 
-    WHERE participant_id = '$participant_id' 
-    AND DATE(check_in) = CURDATE()
-    ORDER BY id DESC LIMIT 1
+    SELECT a.*, u.full_name as verified_by_name 
+    FROM attendance a 
+    LEFT JOIN users u ON a.verified_by = u.id
+    WHERE a.participant_id = '$participant_id' 
+    AND DATE(a.check_in) = CURDATE()
+    ORDER BY a.id DESC LIMIT 1
 ");
 $today = mysqli_fetch_assoc($check);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // --- CHECK-IN ---
     if (isset($_POST['checkin'])) {
-        $note = trim($_POST['note']);
-        if (empty($note)) {
-            echo "<script>alert('Note wajib diisi saat check-in!'); window.location.href='index.php';</script>";
-            exit;
-        }
-
+        $note = trim($_POST['note']); // Note sekarang opsional
         $check_in_location = "Kampus Lauwba";
         $status = "hadir";
 
         $insert = mysqli_query($connect, "
-            INSERT INTO attendance (participant_id, check_in, check_in_location, status, note)
-            VALUES ('$participant_id', NOW(), '$check_in_location', '$status', '$note')
+            INSERT INTO attendance (participant_id, check_in, check_in_location, status, note, verified_by, verified_at)
+            VALUES ('$participant_id', NOW(), '$check_in_location', '$status', '$note', NULL, NULL)
         ");
 
         if ($insert) {
-            echo "<script>alert('Berhasil check-in!'); window.location.href='index.php';</script>";
+            echo "<script>alert('Berhasil check-in! Menunggu verifikasi admin/pembimbing untuk dapat check-out.'); window.location.href='index.php';</script>";
             exit;
         } else {
             echo "<script>alert('Gagal menyimpan absensi!'); window.location.href='index.php';</script>";
@@ -83,22 +80,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // --- CHECK-OUT ---
     if (isset($_POST['checkout'])) {
         $note = trim($_POST['note']);
+        if (empty($note)) {
+            echo "<script>alert('Note wajib diisi saat check-out!'); window.location.href='index.php';</script>";
+            exit;
+        }
+
         $current_id = $today['id'];
 
-        // Kalau note kosong, ambil dari record sebelumnya (tidak diganti)
-        if (empty($note)) {
-            $update = mysqli_query($connect, "
-                UPDATE attendance
-                SET check_out = NOW(), check_out_location = 'Kampus Lauwba'
-                WHERE id = '$current_id'
-            ");
-        } else {
-            $update = mysqli_query($connect, "
-                UPDATE attendance
-                SET check_out = NOW(), check_out_location = 'Kampus Lauwba', note = CONCAT(note, ' | ', '$note')
-                WHERE id = '$current_id'
-            ");
-        }
+        $update = mysqli_query($connect, "
+            UPDATE attendance
+            SET check_out = NOW(), check_out_location = 'Kampus Lauwba', note = CONCAT(note, ' | Check-out: ', '$note')
+            WHERE id = '$current_id'
+        ");
 
         if ($update) {
             echo "<script>alert('Berhasil check-out!'); window.location.href='index.php';</script>";
@@ -112,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 
 <!-- Tampilan Section Absen yang Diperbaiki -->
-<section class="py-5">
+<section class="py-5 " id="absen">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-8">
@@ -134,7 +127,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     </div>
                                     <div>
                                         <h5 class="mb-1"><?php echo htmlspecialchars($user_data['full_name']); ?></h5>
-                                        <p class="mb-0 opacity-75">
+                                        <p class="mb-0 opacity-75 text-white">
                                             <?php echo htmlspecialchars($user_data['school']); ?> - <?php echo htmlspecialchars($user_data['program_study']); ?>
                                         </p>
                                     </div>
@@ -157,18 +150,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <div class="status-indicator bg-warning text-dark p-4 rounded-3 mb-4">
                                     <i class="fas fa-clock fa-3x mb-3"></i>
                                     <h4 class="fw-bold">Belum Check-in</h4>
-                                    <p class="mb-0 text-muted">Silakan isi note dan lakukan check-in untuk memulai aktivitas hari ini</p>
+                                    <p class="mb-0 text-muted">Silakan lakukan check-in untuk memulai aktivitas hari ini</p>
                                 </div>
                                 
                                 <form method="POST" action="" class="col-lg-8 mx-auto">
                                     <div class="mb-4">
                                         <label class="form-label fw-bold text-start w-100">
-                                            <i class="fas fa-sticky-note me-2 text-primary"></i>Note Check-in
-                                            <span class="text-danger">*</span>
+                                            <i class="fas fa-sticky-note me-2 text-primary"></i>Note Check-in (Opsional)
                                         </label>
                                         <textarea name="note" class="form-control form-control-lg" 
-                                                  placeholder="Masukkan catatan aktivitas hari ini (wajib diisi)..." 
-                                                  rows="4" required></textarea>
+                                                  placeholder="Masukkan catatan aktivitas hari ini (opsional)..." 
+                                                  rows="3"></textarea>
                                         <div class="form-text text-start">
                                             <i class="fas fa-info-circle me-1"></i>Contoh: "Siap mengerjakan project website, meeting dengan pembimbing"
                                         </div>
@@ -176,29 +168,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <button type="submit" name="checkin" class="btn btn-primary btn-lg w-100 py-3">
                                         <i class="fas fa-sign-in-alt me-2"></i>Check In Sekarang
                                     </button>
-                                    <small class="text-muted mt-2 d-block">Pastikan note sudah diisi sebelum check-in</small>
                                 </form>
                             </div>
 
-                        <?php elseif ($today && !$today['check_out']): ?>
-                            <!-- Sudah Check-in tapi belum Check-out -->
+                        <?php elseif ($today && !$today['verified_by']): ?>
+                            <!-- Sudah Check-in tapi belum diverifikasi -->
+                            <div class="text-center py-3">
+                                <div class="status-indicator bg-warning text-dark p-4 rounded-3 mb-4">
+                                    <i class="fas fa-clock fa-3x mb-3"></i>
+                                    <h4 class="fw-bold">Menunggu Verifikasi</h4>
+                                    <p class="mb-2"><strong>Waktu Check-in:</strong> <?= date('H:i', strtotime($today['check_in'])) ?></p>
+                                    <p class="mb-1"><strong>Note:</strong> <?= htmlspecialchars($today['note'] ?: '-') ?></p>
+                                    <p class="mb-0 text-danger">Silakan tunggu verifikasi dari admin/pembimbing untuk dapat check-out</p>
+                                </div>
+                                
+                                <button type="button" class="btn btn-secondary btn-lg py-3 col-lg-8" disabled>
+                                    <i class="fas fa-hourglass-half me-2"></i>Menunggu Verifikasi
+                                </button>
+                            </div>
+
+                        <?php elseif ($today && $today['verified_by'] && !$today['check_out']): ?>
+                            <!-- Sudah Check-in dan sudah diverifikasi, tapi belum Check-out -->
                             <div class="text-center py-3">
                                 <div class="status-indicator bg-success text-white p-4 rounded-3 mb-4">
                                     <i class="fas fa-check-circle fa-3x mb-3"></i>
-                                    <h4 class="fw-bold">Sudah Check-in</h4>
-                                    <p class="mb-2"><strong>Waktu Check-in:</strong> <?= date('H:i', strtotime($today['check_in'])) ?></p>
-                                    <p class="mb-1"><strong>Note:</strong> <?= htmlspecialchars($today['note']) ?></p>
-                                    <p class="mb-0">Silakan lakukan check-out saat pulang</p>
+                                    <h4 class="fw-bold">Terverifikasi - Siap Check-out</h4>
+                                    <p class="mb-2 text-white"><strong>Waktu Check-in:</strong> <?= date('H:i', strtotime($today['check_in'])) ?></p>
+                                    <p class="mb-1 text-white"><strong>Diverifikasi oleh:</strong> <?= htmlspecialchars($today['verified_by_name']) ?></p>
+                                    <p class="mb-1 text-white"><strong>Note Check-in:</strong> <?= htmlspecialchars($today['note'] ?: '-') ?></p>
+                                    <p class="mb-0 text-white">Silakan lakukan check-out saat pulang</p>
                                 </div>
                                 
                                 <form method="POST" action="" class="col-lg-8 mx-auto">
                                     <div class="mb-4">
                                         <label class="form-label fw-bold text-start w-100">
-                                            <i class="fas fa-sticky-note me-2 text-success"></i>Note Check-out (Opsional)
+                                            <i class="fas fa-sticky-note me-2 text-success"></i>Note Check-out
+                                            <span class="text-danger">*</span>
                                         </label>
                                         <textarea name="note" class="form-control form-control-lg" 
-                                                  placeholder="Masukkan catatan tambahan atau update progress..." 
-                                                  rows="3"></textarea>
+                                                  placeholder="Masukkan catatan aktivitas hari ini (wajib diisi)..." 
+                                                  rows="4" required></textarea>
                                         <div class="form-text text-start">
                                             <i class="fas fa-info-circle me-1"></i>Contoh: "Project website selesai 80%, besok lanjut debugging"
                                         </div>
@@ -206,7 +215,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <button type="submit" name="checkout" class="btn btn-success btn-lg w-100 py-3">
                                         <i class="fas fa-sign-out-alt me-2"></i>Check Out Sekarang
                                     </button>
-                                    <small class="text-muted mt-2 d-block">Note check-out akan digabung dengan note check-in</small>
+                                    <small class="text-danger mt-2 d-block">Note check-out wajib diisi!</small>
                                 </form>
                             </div>
 
@@ -238,9 +247,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <i class="fas fa-info-circle fa-2x text-primary mb-3"></i>
                                 <h6>Check-in Rules</h6>
                                 <small class="text-muted">
-                                    • Note wajib diisi<br>
-                                    • Isi rencana aktivitas hari ini<br>
-                                    • Lakukan saat tiba di lokasi
+                                    • Note opsional<br>
+                                    • Lakukan saat tiba di lokasi<br>
+                                    • Tunggu verifikasi admin/pembimbing
                                 </small>
                             </div>
                         </div>
@@ -251,9 +260,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <i class="fas fa-info-circle fa-2x text-success mb-3"></i>
                                 <h6>Check-out Rules</h6>
                                 <small class="text-muted">
-                                    • Note opsional<br>
+                                    • Note wajib diisi<br>
                                     • Update progress pekerjaan<br>
-                                    • Lakukan saat akan pulang
+                                    • Hanya bisa setelah diverifikasi
                                 </small>
                             </div>
                         </div>

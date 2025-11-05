@@ -1,4 +1,4 @@
-<section class="about-area about-five py-5" id="tentang">
+<section class="about-area about-five py-5" id="about">
   <div class="container">
     <div class="row align-items-center">
       <!-- Gambar -->
@@ -24,7 +24,7 @@
           </h2>
           <p class="mb-4 text-muted">
             PT Lauwba Techno Indonesia adalah perusahaan yang bergerak di bidang teknologi informasi, meliputi pengembangan software, konsultasi IT,-training digital, dan solusi pemasaran online.  
-            Dengan komitmen untuk memberdayakan talenta muda dan mendukung transformasi digital, Lauwba berlokasi di Yogyakarta dan melayani klien dari berbagai sektor industri. :contentReference[oaicite:1]{index=1}
+            Dengan komitmen untuk memberdayakan talenta muda dan mendukung transformasi digital, Lauwba berlokasi di Yogyakarta dan melayani klien dari berbagai sektor industri. 
           </p>
 
           <div class="about-five-tab">

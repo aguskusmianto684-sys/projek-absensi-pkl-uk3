@@ -10,29 +10,25 @@ if (session_status() === PHP_SESSION_NONE) {
       <div class="col-lg-12">
         <nav class="navbar navbar-expand-lg">
           <a class="navbar-brand" href="index.php">
-            <img src="../frontend/template-user/assets/images/white-logo.svg" alt="Logo" />
+            <img src="../frontend/template-user/assets/images/logo1.png" alt="Logo" />
           </a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNine"
-            aria-controls="navbarNine" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="toggler-icon"></span>
-            <span class="toggler-icon"></span>
-            <span class="toggler-icon"></span>
-          </button>
+
 
           <div class="collapse navbar-collapse sub-menu-bar" id="navbarNine">
             <ul class="navbar-nav me-auto">
               <li class="nav-item">
-                <a class="page-scroll active" href="#hero-area">Home</a>
+                <a class="page-scroll active" href="#hero-area">Beranda</a>
               </li>
               <li class="nav-item">
-                <a class="page-scroll" href="#services">Services</a>
+                <a class="page-scroll" href="#about">Tentang Kami</a>
               </li>
               <li class="nav-item">
-                <a class="page-scroll" href="#pricing">Pricing</a>
+                <a class="page-scroll" href="#absen">Absensi</a>
               </li>
-              <li class="nav-item">
-                <a class="page-scroll" href="#contact">Contact</a>
+               <li class="nav-item">
+                <a class="page-scroll" href="#lokasi">Lokasi Kantor</a>
               </li>
+             
 
               <?php if (isset($_SESSION['id_user'])): ?>
                 <!-- Jika SUDAH login -->
@@ -42,8 +38,9 @@ if (session_status() === PHP_SESSION_NONE) {
                     👋 <?= htmlspecialchars($_SESSION['username']) ?>
                   </a>
                   <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="../absen.php">Absen</a></li>
-                    <li><a class="dropdown-item" href="../profile.php">Profil</a></li>
+                    <li><a class="dropdown-item text-dark" href="../frontend/riwayat.php">📜 Riwayat Absensi</a></li>
+                    <li><a class="dropdown-item text-dark" href="../frontend/progres.php">📈 Progres Kehadiran</a></li>
+                    <li><a class="dropdown-item text-dark" href="../profile.php">👤 Profil</a></li>
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item text-danger" href="auth/logout.php">Logout</a></li>
                   </ul>
@@ -60,9 +57,7 @@ if (session_status() === PHP_SESSION_NONE) {
             </ul>
           </div>
 
-          <div class="navbar-btn d-none d-lg-inline-block">
-            <a class="menu-bar" href="#side-menu-left"><i class="lni lni-menu"></i></a>
-          </div>
+        
         </nav>
       </div>
     </div>

@@ -9,10 +9,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
   <!--====== Title ======-->
-  <title>Business | Bootstrap 5 Business Template</title>
+  <title>Absensi</title>
 
   <!--====== Favicon Icon ======-->
-  <link rel="shortcut icon" href="../frontend/template-user/assets/images/favicon.svg" type="image/svg" />
+  <link rel="shortcut icon" href="../frontend/template-user/assets/images/logo2.png" type="image/svg" />
 
   <!--====== Bootstrap css ======-->
   <link rel="stylesheet" href="../frontend/template-user/assets/css/bootstrap.min.css" />
@@ -27,4 +27,8 @@
   <link rel="stylesheet" href="../frontend/template-user/assets/css/glightbox.min.css" />
 
   <link rel="stylesheet" href="../frontend/template-user/style.css"/>
+
+  <link
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+  rel="stylesheet">
 </head>
