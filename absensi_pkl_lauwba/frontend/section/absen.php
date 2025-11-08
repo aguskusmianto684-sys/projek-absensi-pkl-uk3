@@ -1,4 +1,7 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) session_start();
+
+
 include '../config/connection.php';
 
 // Cek login
@@ -272,44 +275,140 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </div>
 </section>
-
 <style>
+/* RESET CSS UNTUK TOMBOL - PASTIKAN INI DITAMBAHKAN */
+.btn {
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: inline-block !important;
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+.btn-primary, .btn-success, .btn-secondary {
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: inline-block !important;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+    background-color: #4361ee !important; /* Force background */
+    color: white !important; /* Force text color */
+    padding: 12px 24px !important; /* Force padding */
+    font-size: 16px !important; /* Force font size */
+}
+
+.btn-primary:hover, .btn-success:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    opacity: 0.9 !important;
+}
+
+.btn-success {
+    background-color: #28a745 !important;
+}
+
+.btn-secondary {
+    background-color: #6c757d !important;
+}
+
+/* Override any hiding styles */
+button[type="submit"], 
+button[type="button"],
+input[type="submit"] {
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: inline-block !important;
+}
+
+/* Force show all buttons in the absensi section */
+#absen .btn,
+#absen button,
+#absen input[type="submit"] {
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: inline-block !important;
+    background-color: #4361ee !important;
+    color: white !important;
+    border: none !important;
+    padding: 15px 30px !important;
+    font-size: 18px !important;
+    font-weight: 600 !important;
+    border-radius: 10px !important;
+    cursor: pointer !important;
+    width: 100% !important;
+    margin: 10px 0 !important;
+}
+
+/* Specific styles for each button type */
+#absen .btn-primary {
+    background: linear-gradient(135deg, #4361ee, #3a0ca3) !important;
+}
+
+#absen .btn-success {
+    background: linear-gradient(135deg, #28a745, #20c997) !important;
+}
+
+#absen .btn-secondary {
+    background: linear-gradient(135deg, #6c757d, #495057) !important;
+}
+
+/* Disabled state */
+#absen .btn:disabled {
+    opacity: 0.6 !important;
+    cursor: not-allowed !important;
+}
+
+/* Hover effects */
+#absen .btn:hover:not(:disabled) {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15) !important;
+    opacity: 0.95 !important;
+}
+
+/* Rest of your existing styles */
 .bg-gradient-primary {
     background: linear-gradient(135deg, #4361ee, #3a0ca3) !important;
 }
+
 .status-indicator {
     transition: all 0.3s ease;
     border: 2px solid transparent;
 }
+
 .status-indicator:hover {
     transform: translateY(-3px);
     box-shadow: 0 10px 25px rgba(0,0,0,0.15);
 }
+
 .card {
     border-radius: 15px;
 }
+
 .rounded-3 {
     border-radius: 15px !important;
 }
+
 .form-control-lg {
     border-radius: 10px;
     border: 2px solid #e9ecef;
     transition: all 0.3s ease;
 }
+
 .form-control-lg:focus {
     border-color: #4361ee;
     box-shadow: 0 0 0 0.2rem rgba(67, 97, 238, 0.25);
 }
 </style>
 
+
 <script>
-// Update real-time clock
 function updateClock() {
     const now = new Date();
     const timeString = now.toLocaleTimeString('id-ID');
     document.getElementById('currentTime').textContent = timeString;
 }
 
+// HAPUS BARIS INI: "u" (typo)
 setInterval(updateClock, 1000);
 updateClock();
 </script>
