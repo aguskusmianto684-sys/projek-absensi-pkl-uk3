@@ -2,7 +2,7 @@
 $hostname = "localhost";
 $username = "root";
 $password = "";
-$database = "absensi_pkl_lauwba";
+$database = "absensi_pkl_lauwba1";
 
 $connect = mysqli_connect($hostname, $username, $password, $database);
 
