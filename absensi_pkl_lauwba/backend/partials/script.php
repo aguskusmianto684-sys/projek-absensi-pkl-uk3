@@ -363,6 +363,56 @@ $(document).ready(function() {
         language: { url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/id.json" }
     });
 
+        // ✅ Tabel Attendance (Absensi Peserta)
+    $('#attendanceTable').DataTable({
+        responsive: true,
+        pageLength: 10,
+        lengthMenu: [5, 10, 25, 50, 100],
+        ordering: true,
+        searching: true,
+        order: [[0, "asc"]],
+        language: { 
+            url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/id.json",
+            search: "Cari:",
+            lengthMenu: "Tampilkan _MENU_ data per halaman",
+            info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+            infoEmpty: "Tidak ada data tersedia",
+            zeroRecords: "Tidak ditemukan data yang cocok",
+            paginate: {
+                first: "Awal",
+                last: "Akhir",
+                next: "›",
+                previous: "‹"
+            }
+        }
+    });
+
+        // ✅ Tabel Rekap Absensi
+    $('#rekapTable').DataTable({
+        responsive: true,
+        pageLength: 10,
+        lengthMenu: [5, 10, 25, 50, 100],
+        ordering: true,
+        searching: true,
+        order: [[1, "asc"]],
+        language: { 
+            url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/id.json",
+            search: "Cari:",
+            lengthMenu: "Tampilkan _MENU_ data per halaman",
+            info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+            infoEmpty: "Tidak ada data tersedia",
+            zeroRecords: "Tidak ditemukan data yang cocok",
+            paginate: {
+                first: "Awal",
+                last: "Akhir",
+                next: "›",
+                previous: "‹"
+            }
+        }
+    });
+
+
+
     // ✅ Tabel Schedules (Jadwal Absensi)
     $('#schedulesTable').DataTable({
         responsive: true,
