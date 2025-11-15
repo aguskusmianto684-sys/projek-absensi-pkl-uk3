@@ -85,7 +85,6 @@ if ($res) {
         ";
         $msg_wa = "Halo {$data['nama_peserta']}, absensi kamu telah diverifikasi oleh pembimbing {$data['nama_pembimbing']}. - Sistem Absensi PKL Lauwba";
 
-        if (!empty($data['email_peserta'])) sendEmail($data['email_peserta'], $subject, $body);
         if (!empty($data['phone_peserta'])) sendWhatsApp($data['phone_peserta'], $msg_wa);
 
         echo json_encode(['status' => 'success', 'message' => '✅ Absensi berhasil diverifikasi & notifikasi dikirim.']);
@@ -100,7 +99,6 @@ if ($res) {
         ";
         $msg_wa = "Halo {$data['nama_peserta']}, verifikasi absensi kamu dibatalkan oleh pembimbing {$data['nama_pembimbing']}. - Sistem Absensi PKL Lauwba";
 
-        if (!empty($data['email_peserta'])) sendEmail($data['email_peserta'], $subject, $body);
         if (!empty($data['phone_peserta'])) sendWhatsApp($data['phone_peserta'], $msg_wa);
 
         echo json_encode(['status' => 'warning', 'message' => '⚠️ Verifikasi dibatalkan & notifikasi dikirim.']);

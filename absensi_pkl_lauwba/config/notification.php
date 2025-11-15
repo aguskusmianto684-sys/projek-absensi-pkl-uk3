@@ -51,48 +51,7 @@ define('MAIL_FROM_NAME', 'Sistem Absensi');
 define('FONNTE_TOKEN', 'DazL7rurvvV7iQ2LKJV9');
 
 // ============================================================
-// 📨 FUNGSI KIRIM EMAIL (PHPMailer)
-// ============================================================
-function sendEmail($to, $subject, $body, $debug = false)
-{
-    if (empty(MAIL_USERNAME) || empty(MAIL_PASSWORD)) {
-        dbg_log("sendEmail: Konfigurasi email belum diisi!");
-        return ['ok' => false, 'error' => 'Mail config missing'];
-    }
 
-    try {
-        $mail = new PHPMailer(true);
-
-        $mail->isSMTP();
-        $mail->Host       = MAIL_HOST;
-        $mail->SMTPAuth   = true;
-        $mail->Username   = MAIL_USERNAME;
-        $mail->Password   = MAIL_PASSWORD;
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port       = 587;
-        $mail->CharSet    = 'UTF-8';
-
-        $mail->setFrom(MAIL_FROM, MAIL_FROM_NAME);
-        $mail->addAddress($to);
-
-        $mail->isHTML(true);
-        $mail->Subject = $subject;
-        $mail->Body    = $body;
-
-        $mail->send();
-
-        dbg_log("✅ Email terkirim ke $to dengan subjek '$subject'");
-        return ['ok' => true];
-    } catch (\PHPMailer\PHPMailer\Exception $e) {
-        $err = $e->getMessage();
-        dbg_log("❌ PHPMailer Error ($to): $err");
-        return ['ok' => false, 'error' => $err];
-    } catch (\Exception $e) {
-        $err = $e->getMessage();
-        dbg_log("❌ General Error ($to): $err");
-        return ['ok' => false, 'error' => $err];
-    }
-}
 
 // ============================================================
 // 💬 FUNGSI KIRIM WHATSAPP (FONNTE API)
