@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
           <p class="text-center mt-3">
             Belum punya akun?
-            <a href="register.php">Daftar di sini</a> 
+            <a href="register.php">Daftar di sini</a>
           </p>
         </div>
       </div>

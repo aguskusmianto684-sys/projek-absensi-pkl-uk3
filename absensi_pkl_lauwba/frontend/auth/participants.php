@@ -4,8 +4,17 @@ session_start();
 include "../../config/connection.php";
 include '../partials/header.php';
 
-// Ambil user_id dari register
-$user_id = $_GET['user_id'] ?? 0;
+// CEK JIKA ADA PENDING REGISTRATION - WAJIB ISI FORM
+if (isset($_SESSION['pending_registration']) && $_SESSION['pending_registration'] === true) {
+    $user_id = $_SESSION['pending_user_id'];
+    
+    // Hapus session pending setelah digunakan
+    unset($_SESSION['pending_registration']);
+    unset($_SESSION['pending_user_id']);
+} else {
+    // Ambil user_id dari register (cara biasa)
+    $user_id = $_GET['user_id'] ?? 0;
+}
 
 // Validasi user_id
 if (!$user_id || !is_numeric($user_id)) {
@@ -60,6 +69,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ";
 
         if (mysqli_query($connect, $qInsert)) {
+            // SET SESSION untuk menandai sudah lengkap
+            $_SESSION['registration_complete'] = true;
+            
             echo "<script>
                     alert('Data peserta berhasil disimpan! Silakan login.');
                     window.location.href='../auth/login.php';
@@ -105,6 +117,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             padding: 15px;
             margin-bottom: 20px;
         }
+        .warning-box {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+            color: #856404;
+        }
     </style>
 </head>
 
@@ -118,6 +138,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
                 
                 <div class="card-body">
+                    <!-- Warning Box -->
+                    <div class="warning-box">
+                        <strong>⚠️ PERHATIAN:</strong> Anda harus melengkapi data peserta sebelum dapat menggunakan sistem.
+                    </div>
+                    
                     <!-- Info User -->
                     <div class="user-info">
                         <h5>Informasi Akun</h5>
@@ -172,9 +197,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <button type="submit" class="btn btn-primary btn-lg">
                                 Simpan Data Peserta
                             </button>
-                            <a href="../auth/login.php" class="btn btn-outline-secondary">
-                                Kembali ke Login
-                            </a>
                         </div>
                     </form>
                 </div>
@@ -201,6 +223,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     document.getElementById('start_date').addEventListener('change', function() {
         document.getElementById('end_date').min = this.value;
     });
+    
+    // MENCEGAH BACK BUTTON - Alert jika mencoba back
+    window.addEventListener('popstate', function(event) {
+        alert('⚠️ Anda harus melengkapi data peserta terlebih dahulu!');
+        window.history.forward();
+    });
+    
+    // Push state untuk memastikan back button terdeteksi
+    history.pushState(null, null, location.href);
+    window.onpopstate = function () {
+        history.go(1);
+        alert('⚠️ Anda harus melengkapi data peserta terlebih dahulu!');
+    };
 </script>
 </body>
 </html>
