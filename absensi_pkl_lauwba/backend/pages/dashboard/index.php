@@ -3,7 +3,7 @@ session_start();
 if (!isset($_SESSION['logged_in'])) {
   echo "<script>
         alert('Silakan login terlebih dahulu!');
-        window.location.href='../auth/login.php';
+        window.location.href='../user/login.php';
     </script>";
   exit();
 }

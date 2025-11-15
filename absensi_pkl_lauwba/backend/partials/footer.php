@@ -33,32 +33,14 @@
 </style>
 
 <footer class="footer shadow-footer">
-  <div class="container-fluid d-flex justify-content-between align-items-center py-3">
-    <nav class="pull-left">
-      <ul class="nav">
-        <li class="nav-item">
-          <a class="nav-link fw-semibold" href="http://www.themekita.com">ThemeKita</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-secondary" href="#">Help</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-secondary" href="#">Licenses</a>
-        </li>
-      </ul>
-    </nav>
-
-    <div class="copyright text-muted small">
-      © 2024, made with <i class="fa fa-heart heart text-danger"></i> by
-      <a href="http://www.themekita.com" class="fw-semibold">ThemeKita</a>
-    </div>
-
-    <div class="text-muted small">
-      Distributed by
-      <a target="_blank" href="https://themewagon.com/" class="fw-semibold">ThemeWagon</a>.
+  <div class="container-fluid d-flex justify-content-center align-items-center py-3">
+    <div class="copyright text-muted small text-center">
+      © by
+      <a href="http://www.themekita.com" class="fw-semibold">Lauwba Techno Indonesia</a>
     </div>
   </div>
 </footer>
+
 
 
   <!-- ✅ Toast Notification Global -->
