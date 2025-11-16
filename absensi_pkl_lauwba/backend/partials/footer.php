@@ -12,13 +12,13 @@
 
   /* Warna teks footer */
   .shadow-footer a {
-    color: #0077b6;
+    color: #0d0e0fff;
     text-decoration: none;
     transition: color 0.3s ease;
   }
 
   .shadow-footer a:hover {
-    color: #023e8a;
+    color: #000000ff;
     text-decoration: underline;
   }
 
@@ -36,7 +36,7 @@
   <div class="container-fluid d-flex justify-content-center align-items-center py-3">
     <div class="copyright text-muted small text-center">
       © by
-      <a href="http://www.themekita.com" class="fw-semibold">Lauwba Techno Indonesia</a>
+      <a class="fw-semibold">Lauwba Techno Indonesia</a>
     </div>
   </div>
 </footer>
