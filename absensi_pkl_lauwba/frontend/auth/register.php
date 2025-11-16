@@ -1,12 +1,21 @@
 <?php
 session_name("absenPklSession");
 session_start();
-include "../../config/connection.php"; // pastikan path benar
+include "../../config/connection.php";
+
+if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
+  echo "<script>
+        alert('Anda sudah Registrasi Silahkan Lengkapi Data Peserta!');
+        window.location.href='../auth/participants.php';
+    </script>";
+  exit();
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username   = mysqli_real_escape_string($connect, $_POST['username']);
     $full_name  = mysqli_real_escape_string($connect, $_POST['full_name']);
     $email      = mysqli_real_escape_string($connect, $_POST['email']);
+    $phone      = mysqli_real_escape_string($connect, $_POST['phone']);
     $password   = password_hash($_POST['password'], PASSWORD_DEFAULT);
     $role       = 'peserta';
     $status     = 'aktif';
@@ -17,15 +26,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['error'] = "Username atau email sudah digunakan!";
     } else {
         $query = "
-            INSERT INTO users (username, password_hash, full_name, email, role, status, created_at, updated_at)
-            VALUES ('$username', '$password', '$full_name', '$email', '$role', '$status', NOW(), NOW())
+            INSERT INTO users (username, password_hash, full_name, email, phone, role, status, created_at, updated_at)
+            VALUES ('$username', '$password', '$full_name', '$email', '$phone', '$role', '$status', NOW(), NOW())
         ";
         $insert = mysqli_query($connect, $query);
 
-        if ($insert) {
-            $_SESSION['success'] = "Registrasi berhasil! Silakan login.";
-            header("Location: login.php");
-            exit;
+       if ($insert) {
+        $last_id = mysqli_insert_id($connect); // ← ambil ID user baru
+        
+        // SET SESSION untuk mencegah back button
+        $_SESSION['pending_registration'] = true;
+        $_SESSION['pending_user_id'] = $last_id;
+        
+        $_SESSION['success'] = "Registrasi berhasil! Silakan Lengkapi Data Peserta.";
+        header("Location: participants.php?user_id=$last_id"); // ← kirim ID user
+        exit;
+
         } else {
             $_SESSION['error'] = "Gagal menyimpan data: " . mysqli_error($connect);
         }
@@ -39,6 +55,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <meta charset="UTF-8">
   <title>Register - PKL Lauwba</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script>
+    // Mencegah back button setelah submit
+    if (window.history.replaceState) {
+        window.history.replaceState(null, null, window.location.href);
+    }
+  </script>
 </head>
 <body class="bg-light">
 
@@ -60,14 +82,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               <label>Username</label>
               <input type="text" name="username" class="form-control" required>
             </div>
+
             <div class="mb-3">
               <label>Nama Lengkap</label>
               <input type="text" name="full_name" class="form-control" required>
             </div>
+
             <div class="mb-3">
               <label>Email</label>
               <input type="email" name="email" class="form-control" required>
             </div>
+
+            <div class="mb-3">
+              <label>No. Telepon / WhatsApp</label>
+              <input type="text" name="phone" class="form-control" required>
+            </div>
+
             <div class="mb-3">
               <label>Password</label>
               <input type="password" name="password" class="form-control" required>
