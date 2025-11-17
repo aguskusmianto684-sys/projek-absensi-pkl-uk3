@@ -105,6 +105,7 @@ h4.card-title {
                 <p class="label-info">Email</p>
                 <p class="value-info"><?= htmlspecialchars($user->email ?? '-') ?></p>
               </div>
+              
             </div>
 
             <div class="row">
@@ -122,6 +123,12 @@ h4.card-title {
                   <?php endif; ?>
                 </p>
               </div>
+              <!-- Nomor Telepon -->
+              <div class="col-md-6 mb-3">
+                <p class="label-info">Nomor Telepon</p>
+                <p class="value-info"><?= htmlspecialchars($user->phone ?? '-') ?></p>
+              </div>
+              <!-- End Nomor Telepon -->
             </div>
 
             <hr class="my-3">
@@ -154,3 +161,7 @@ h4.card-title {
 
 <?php include '../../partials/footer.php'; ?>
 <?php include '../../partials/script.php'; ?>
+
+
+
+

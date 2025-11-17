@@ -63,7 +63,7 @@ $username_display = $user_data['username'] ?? $_SESSION['username'] ?? 'Guest';
 
 
         <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
-          <li
+          <!-- <li
             class="nav-item topbar-icon dropdown hidden-caret d-flex d-lg-none">
             <a
               class="nav-link dropdown-toggle"
@@ -241,7 +241,7 @@ $username_display = $user_data['username'] ?? $_SESSION['username'] ?? 'Guest';
                 </a>
               </li>
             </ul>
-          </li>
+          </li> -->
 
           <li class="nav-item topbar-user dropdown hidden-caret">
             <a

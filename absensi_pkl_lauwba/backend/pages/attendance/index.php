@@ -175,7 +175,7 @@ $result = mysqli_query($connect, $qAttendance) or die(mysqli_error($connect));
             style="background: linear-gradient(135deg, #023e8a, #0077b6, #90e0ef);">
             <h5 class="mb-0 text-white">Tabel Absensi Peserta</h5>
 
-            <div>
+            <!-- <div>
               <?php if ($role === 'peserta'): ?>
                 <a href="./scan_verify.php" class="btn btn-success me-2">
                   <i class="fas fa-qrcode me-1"></i> Scan QR
@@ -193,7 +193,7 @@ $result = mysqli_query($connect, $qAttendance) or die(mysqli_error($connect));
                 </a>
                 <a href="create.php" class="btn btn-primary">Tambah Absensi Manual</a>
               <?php endif; ?>
-            </div>
+            </div> -->
           </div>
 
           <div class="card-body">

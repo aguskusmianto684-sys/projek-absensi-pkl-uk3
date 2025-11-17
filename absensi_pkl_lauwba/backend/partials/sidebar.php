@@ -14,7 +14,7 @@ if (session_status() === PHP_SESSION_NONE) {
           alt="navbar brand"
           class="navbar-brand me-0"
           height="50" />
-        <span class="text-white fw-bold fs-5">Lauwba Academy</span>
+        <span class="text-white fw-bold fs-5">PT.Lauwba Techno</span>
       </a>
       <div class="nav-toggle">
         <button class="btn btn-toggle toggle-sidebar">
