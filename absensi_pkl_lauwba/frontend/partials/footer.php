@@ -19,7 +19,7 @@
       
       <div class="col-lg-4 col-md-12 col-12 text-center text-md-end">
         <p class="text-light small mb-0">
-          © 2024 PT Lauwba Techno Indonesia. All rights reserved.
+          © 2024 PT Lauwba Techno Indonesia. 
         </p>
         <p class="text-muted small mb-0">
           <a href="javascript:void(0)" class="text-muted text-decoration-none me-2">Privacy</a>
