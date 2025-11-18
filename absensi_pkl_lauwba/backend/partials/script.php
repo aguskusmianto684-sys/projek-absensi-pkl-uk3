@@ -200,6 +200,12 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 
 <script>
 $(document).ready(function() {
@@ -258,29 +264,62 @@ $(document).ready(function() {
         }
     });
 
-        // ✅ Tabel Rekap Absensi
-    $('#rekapTable').DataTable({
-        responsive: true,
-        pageLength: 10,
-        lengthMenu: [5, 10, 25, 50, 100],
-        ordering: true,
-        searching: true,
-        order: [[1, "asc"]],
-        language: { 
-            url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/id.json",
-            search: "Cari:",
-            lengthMenu: "Tampilkan _MENU_ data per halaman",
-            info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
-            infoEmpty: "Tidak ada data tersedia",
-            zeroRecords: "Tidak ditemukan data yang cocok",
-            paginate: {
-                first: "Awal",
-                last: "Akhir",
-                next: "›",
-                previous: "‹"
-            }
+    
+
+// ✅ Tabel Rekap Absensi + Tombol PDF / Excel / CSV / Print
+$('#rekapTable').DataTable({
+    responsive: true,
+    pageLength: 10,
+    lengthMenu: [5, 10, 25, 50, 100],
+    ordering: true,
+    searching: true,
+    order: [[1, "asc"]],
+    dom: 'Bfrtip', // <-- WAJIB untuk tombol export
+    buttons: [
+        {
+            extend: 'copy',
+            text: 'Copy',
+            className: 'btn btn-secondary btn-sm'
+        },
+        {
+            extend: 'excel',
+            text: 'Export Excel',
+            className: 'btn btn-success btn-sm'
+        },
+        {
+            extend: 'csv',
+            text: 'Export CSV',
+            className: 'btn btn-info btn-sm'
+        },
+        {
+            extend: 'pdf',
+            text: 'Download PDF',
+            className: 'btn btn-danger btn-sm',
+            orientation: 'landscape',
+            pageSize: 'A4'
+        },
+        {
+            extend: 'print',
+            text: 'Cetak',
+            className: 'btn btn-primary btn-sm'
         }
-    });
+    ],
+    language: { 
+        url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/id.json",
+        search: "Cari:",
+        lengthMenu: "Tampilkan _MENU_ data per halaman",
+        info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+        infoEmpty: "Tidak ada data tersedia",
+        zeroRecords: "Tidak ditemukan data yang cocok",
+        paginate: {
+            first: "Awal",
+            last: "Akhir",
+            next: "›",
+            previous: "‹"
+        }
+    }
+});
+
 
 
 

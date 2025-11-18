@@ -174,6 +174,7 @@ $result = mysqli_query($connect, $qAttendance) or die(mysqli_error($connect));
           <div class="card-header d-flex align-items-center justify-content-between"
             style="background: linear-gradient(135deg, #023e8a, #0077b6, #90e0ef);">
             <h5 class="mb-0 text-white">Tabel Absensi Peserta</h5>
+            <a href="create.php" class="btn btn-primary">Tambah</a>
 
             <!-- <div>
               <?php if ($role === 'peserta'): ?>
