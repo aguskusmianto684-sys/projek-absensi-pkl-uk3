@@ -1,12 +1,12 @@
 <?php
-// session_start();
-// if (!isset($_SESSION['logged_in'])) {
-//   echo "<script>
-//         alert('Silakan login terlebih dahulu!');
-//         window.location.href='../user/login.php';
-//     </script>";
-//   exit();
-// }
+session_start();
+if (!isset($_SESSION['logged_in'])) {
+  echo "<script>
+        alert('Silakan login terlebih dahulu!');
+        window.location.href='../user/login.php';
+    </script>";
+  exit();
+}
 
 $page = "users";
 include __DIR__ . '/../../../config/connection.php';
