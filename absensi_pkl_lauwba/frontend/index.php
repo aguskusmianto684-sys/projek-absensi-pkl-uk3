@@ -1,6 +1,6 @@
 <?php 
-session_name("absenPklSession");
- include './partials/header.php';
+// session_name("absenPklSession");
+//  include './partials/header.php';
  
 ?>
 <body>
